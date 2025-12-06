@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="helpline-section py-5" style="background: #f5f6fa;">
+    <div class="container">
+
+        <!-- Heading -->
+        <div class="text-center mb-5">
+            <span class="badge bg-danger-subtle text-danger fw-semibold px-3 py-2 mb-2">
+                Emergency Support
+            </span>
+            <h1 class="fw-bold mb-2">Helpline Contacts</h1>
+            <p class="text-muted mb-0">
+                Verified emergency numbers you can reach quickly in case of any threat or unsafe situation.
+            </p>
+        </div>
+
+        <!-- Highlighted Emergency Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 rounded-4 bg-danger text-white text-center p-4 h-100">
+                    <h4 class="fw-bold mb-1">Women Helpline</h4>
+                    <p class="fs-3 fw-bold mb-1">1091</p>
+                    <p class="small mb-3">24x7 support for women’s safety</p>
+                    <a href="tel:1091" class="btn btn-light btn-sm fw-semibold px-4">
+                        Call Now
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 rounded-4 bg-warning text-dark text-center p-4 h-100">
+                    <h4 class="fw-bold mb-1">Police</h4>
+                    <p class="fs-3 fw-bold mb-1">100</p>
+                    <p class="small mb-3">Immediate police assistance</p>
+                    <a href="tel:100" class="btn btn-dark btn-sm fw-semibold px-4">
+                        Call Now
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 rounded-4 bg-success text-white text-center p-4 h-100">
+                    <h4 class="fw-bold mb-1">Ambulance</h4>
+                    <p class="fs-3 fw-bold mb-1">108</p>
+                    <p class="small mb-3">Medical help in emergencies</p>
+                    <a href="tel:108" class="btn btn-light btn-sm fw-semibold px-4">
+                        Call Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="alert alert-info border-0 rounded-4 shadow-sm mb-4">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                <div>
+                    <strong>Tip:</strong> Save these numbers as contacts in your phone for faster access.
+                </div>
+                <div class="small text-muted">
+                    In an emergency, always call first. Then use the panic button in the app to alert your trusted contacts.
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Table of Contacts -->
+        <div class="table-wrapper shadow-sm rounded-4 bg-white p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="mb-0 fw-semibold">Detailed Helpline Directory</h5>
+                <span class="small text-muted">Tap on the phone number to start a call.</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" style="width: 60px;">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contact in helpline_contacts %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td class="fw-semibold text-start">{{ contact.name }}</td>
+                            <td>
+                                <a href="tel:{{ contact.phone_number }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                                    📞 {{ contact.phone_number }}
+                                </a>
+                            </td>
+                            <td>
+                                {% if contact.email %}
+                                    <a href="mailto:{{ contact.email }}" class="text-decoration-none">
+                                        {{ contact.email }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">N/A</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-start">
+                                {{ contact.description|default:"No additional details provided." }}
+                            </td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No custom helpline contacts found. Showing standard women safety helplines:
+                            </td>
+                        </tr>
+
+                        <!-- Default Women-Related Helpline Contacts -->
+                        <tr>
+                            <th scope="row">1</th>
+                            <td class="fw-semibold text-start">National Women Helpline (MWCD)</td>
+                            <td>
+                                <a href="tel:181" class="btn btn-sm btn-outline-primary rounded-pill">📞 181</a>
+                            </td>
+                            <td>
+                                <a href="mailto:nwh-dwcw@gov.in" class="text-decoration-none">nwh-dwcw@gov.in</a>
+                            </td>
+                            <td class="text-start">
+                                24x7 support for women in distress, domestic violence, or harassment cases.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2</th>
+                            <td class="fw-semibold text-start">Women Helpline (Police Control Room)</td>
+                            <td>
+                                <a href="tel:1091" class="btn btn-sm btn-outline-primary rounded-pill">📞 1091</a>
+                            </td>
+                            <td><span class="text-muted">N/A</span></td>
+                            <td class="text-start">
+                                Immediate police assistance for women’s safety across India.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">3</th>
+                            <td class="fw-semibold text-start">One Stop Centre (Sakhi)</td>
+                            <td>
+                                <a href="tel:7827170170" class="btn btn-sm btn-outline-primary rounded-pill">📞 7827170170</a>
+                            </td>
+                            <td><span class="text-muted">N/A</span></td>
+                            <td class="text-start">
+                                Shelter, legal aid, counseling, and medical support for women affected by violence.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">4</th>
+                            <td class="fw-semibold text-start">National Commission for Women (NCW)</td>
+                            <td>
+                                <a href="tel:01126944880" class="btn btn-sm btn-outline-primary rounded-pill">📞 011-2694-4880</a>
+                            </td>
+                            <td>
+                                <a href="mailto:complaintcell-ncw@nic.in" class="text-decoration-none">
+                                    complaintcell-ncw@nic.in
+                                </a>
+                            </td>
+                            <td class="text-start">
+                                Complaints related to workplace harassment, abuse, and women’s rights violations.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">5</th>
+                            <td class="fw-semibold text-start">Cyber Crime Helpline (Online Safety)</td>
+                            <td>
+                                <a href="tel:1930" class="btn btn-sm btn-outline-primary rounded-pill">📞 1930</a>
+                            </td>
+                            <td>
+                                <a href="mailto:cybercrime.gov.in" class="text-decoration-none">
+                                    cybercrime.gov.in
+                                </a>
+                            </td>
+                            <td class="text-start">
+                                Report online harassment, cyberbullying, or misuse of social media safely.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">6</th>
+                            <td class="fw-semibold text-start">Snehi NGO (Domestic Violence Support)</td>
+                            <td>
+                                <a href="tel:9582208181" class="btn btn-sm btn-outline-primary rounded-pill">📞 9582208181</a>
+                            </td>
+                            <td>
+                                <a href="mailto:info@snehi.org" class="text-decoration-none">
+                                    info@snehi.org
+                                </a>
+                            </td>
+                            <td class="text-start">
+                                Counseling, shelter, and legal help for domestic violence survivors.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center mt-4">
+            <a href="{% url 'home' %}" class="btn btn-dark shadow px-4 py-2 rounded-pill">
+                ⬅ Back to Homepage
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Extra CSS -->
+<style>
+    .helpline-section h1 {
+        font-size: 2.4rem;
+        color: #212529;
+    }
+
+    .helpline-section p {
+        font-size: 0.98rem;
+    }
+
+    .card {
+        transition: all 0.25s ease-in-out;
+        border-radius: 18px;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 32px rgba(0,0,0,0.15);
+    }
+
+    .table-wrapper {
+        border-radius: 20px;
+    }
+
+    table thead th {
+        border: none !important;
+    }
+
+    table tbody tr td,
+    table tbody tr th {
+        vertical-align: middle;
+    }
+
+    table tbody tr:hover {
+        background-color: #f8fbff;
+    }
+
+    .bg-danger-subtle {
+        background-color: #ffe6e9;
+    }
+
+    .bg-warning-subtle {
+        background-color: #fff6e0;
+    }
+
+    .bg-success-subtle {
+        background-color: #e6f6ec;
+    }
+</style>
+
+{% endblock %}

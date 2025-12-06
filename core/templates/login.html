@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="login-section py-5" style="background:#f3f4f6;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-lg-4">
+
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+
+                        <!-- Heading -->
+                        <h3 class="fw-bold text-center mb-2" style="color:#202124;">
+                            Login
+                        </h3>
+                        <p class="text-center text-muted small mb-4">
+                            Access your account securely
+                        </p>
+
+                        <!-- Messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show small" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- LOGIN FORM -->
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label class="form-label small">Username</label>
+                                <input type="text"
+                                       name="username"
+                                       class="form-control custom-input"
+                                       placeholder="Enter username"
+                                       required>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label class="form-label small">Password</label>
+                                <input type="password"
+                                       name="password"
+                                       class="form-control custom-input"
+                                       placeholder="Enter password"
+                                       required>
+                            </div>
+
+                            <!-- Login button -->
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-blue fw-semibold py-2">
+                                    Login
+                                </button>
+                            </div>
+
+                            <!-- Register link -->
+                            <p class="text-center small mb-0">
+                                Don’t have an account?
+                                <a href="{% url 'register' %}" class="text-blue fw-semibold text-decoration-none">
+                                    Register here
+                                </a>
+                            </p>
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- Back to home -->
+                <div class="text-center mt-4">
+                    <a href="{% url 'home' %}" class="btn btn-outline-dark px-4 py-2 rounded-pill">
+                        ⬅ Back to Homepage
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Professional Blue */
+.text-blue { color:#1a73e8 !important; }
+
+.btn-blue {
+    background:#1a73e8;
+    color:#fff;
+    border-radius:8px;
+    border:none;
+    transition:0.2s ease;
+}
+.btn-blue:hover {
+    background:#1557b0;
+    color:#fff;
+}
+
+.custom-input {
+    border-radius: 10px;
+    border: 1px solid #d1d1d1;
+    padding: 10px;
+    transition:0.25s;
+}
+.custom-input:focus {
+    border-color:#1a73e8;
+    box-shadow: 0 0 0 0.15rem rgba(26,115,232,0.25);
+}
+</style>
+
+{% endblock %}

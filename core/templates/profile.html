@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="profile-page py-5" style="background-color: #f5f6fa;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-1">My Profile</h2>
+            <p class="text-muted mb-0">Manage your account details, verification and profile picture.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="card profile-card shadow-lg border-0 rounded-4 overflow-hidden">
+                    <div class="row g-0">
+                        <!-- Profile Sidebar -->
+                        <div class="col-md-4 profile-sidebar d-flex flex-column align-items-center justify-content-between p-4 text-white">
+                            <div class="w-100">
+                                <div class="d-flex flex-column align-items-center mb-3">
+                                    <div class="profile-pic mb-3">
+                                        {% if user.profile_picture %}
+                                            <img id="currentProfile" src="{{ user.profile_picture.url }}" class="rounded-circle img-fluid"
+                                                 style="width:140px;height:140px;object-fit:cover;">
+                                        {% else %}
+                                            <img id="currentProfile" src="https://img.icons8.com/ios-filled/150/ffffff/user-male-circle.png"
+                                                 class="img-fluid" style="width:140px;height:140px;">
+                                        {% endif %}
+                                    </div>
+                                    <h5 class="mb-0 fw-semibold">{{ user.username }}</h5>
+                                    <small class="text-light opacity-75">{{ user.email }}</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small mb-1">Update profile picture</label>
+                                    <input type="file" id="profileInput" accept="image/*" class="form-control form-control-sm bg-dark-subtle text-white border-0">
+                                </div>
+                                <button id="cropBtn" class="btn btn-sm btn-light w-100" disabled>
+                                    Crop & Upload
+                                </button>
+                            </div>
+
+                            <div class="mt-4 w-100 small text-center opacity-75">
+                                <span class="badge bg-light text-dark mb-1">Women Safety App</span>
+                                <p class="mb-0">Keep your profile updated so we can reach you quickly in emergencies.</p>
+                            </div>
+                        </div>
+
+                        <!-- Profile Details -->
+                        <div class="col-md-8 bg-white">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="fw-bold mb-0">Account Details</h4>
+                                    {% if user.is_verified and user.phone_verified and user.email_verified %}
+                                        <span class="badge bg-success-subtle text-success fw-semibold px-3 py-2">
+                                            ✓ Fully Verified
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                                <form method="POST" action="{% url 'profile' %}">
+                                    {% csrf_token %}
+
+                                    <!-- Username -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" name="username" value="{{ user.username }}" class="form-control"
+                                               placeholder="Enter your username">
+                                    </div>
+
+                                    <!-- Aadhaar -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0">Aadhaar Number</label>
+                                            {% if user.is_verified %}
+                                                <span class="badge bg-success-subtle text-success">Verified</span>
+                                            {% endif %}
+                                        </div>
+                                        <input type="text" name="aadhaar_number" value="{{ user.aadhaar_number }}" class="form-control mb-2"
+                                               placeholder="XXXX-XXXX-XXXX">
+                                        {% if not user.is_verified %}
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm" id="aadhaarOtpBtn">
+                                                    Send Aadhaar OTP
+                                                </button>
+                                                <input type="text" name="aadhaar_otp" class="form-control form-control-sm"
+                                                       placeholder="Enter Aadhaar OTP">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Contact Number -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0">Contact Number</label>
+                                            {% if user.phone_verified %}
+                                                <span class="badge bg-success-subtle text-success">Verified</span>
+                                            {% endif %}
+                                        </div>
+                                        <input type="text" name="contact_number" value="{{ user.contact_number }}" class="form-control mb-2"
+                                               placeholder="Enter your phone number">
+                                        {% if not user.phone_verified %}
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm" id="phoneOtpBtn">
+                                                    Send Phone OTP
+                                                </button>
+                                                <input type="text" name="phone_otp" class="form-control form-control-sm"
+                                                       placeholder="Enter Phone OTP">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0">Email</label>
+                                            {% if user.email_verified %}
+                                                <span class="badge bg-success-subtle text-success">Verified</span>
+                                            {% endif %}
+                                        </div>
+                                        <input type="email" name="email" value="{{ user.email }}" class="form-control mb-2"
+                                               placeholder="Enter your email address">
+                                        {% if not user.email_verified %}
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm" id="emailOtpBtn">
+                                                    Send Email OTP
+                                                </button>
+                                                <input type="text" name="email_otp" class="form-control form-control-sm"
+                                                       placeholder="Enter Email OTP">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="mt-4 d-flex justify-content-between flex-wrap gap-2">
+                                        <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">
+                                            ← Back to Homepage
+                                        </a>
+                                        <button type="submit" class="btn btn-success px-4">
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div> <!-- row -->
+                </div> <!-- card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CropperJS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script>
+let cropper;
+const input = document.getElementById('profileInput');
+const currentImage = document.getElementById('currentProfile');
+const cropBtn = document.getElementById('cropBtn');
+
+if (input) {
+    input.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            currentImage.src = url;
+
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            cropper = new Cropper(currentImage, {
+                aspectRatio: 1,
+                viewMode: 1
+            });
+
+            cropBtn.disabled = false;
+        }
+    });
+}
+
+if (cropBtn) {
+    cropBtn.addEventListener('click', () => {
+        if (!cropper) {
+            alert('Please select an image first.');
+            return;
+        }
+
+        cropper.getCroppedCanvas({ width: 300, height: 300 }).toBlob(blob => {
+            const formData = new FormData();
+            formData.append('profile_picture', blob, 'profile.png');
+            formData.append('csrfmiddlewaretoken', document.querySelector('meta[name="csrf-token"]').content);
+
+            fetch("{% url 'profile' %}", {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.text())
+            .then(() => {
+                location.reload();
+            })
+            .catch(() => alert('Error uploading image!'));
+        });
+    });
+}
+
+// OTP buttons
+document.getElementById('phoneOtpBtn')?.addEventListener('click', () => sendOtp('phone'));
+document.getElementById('emailOtpBtn')?.addEventListener('click', () => sendOtp('email'));
+document.getElementById('aadhaarOtpBtn')?.addEventListener('click', () => sendOtp('aadhaar'));
+
+function sendOtp(type) {
+    fetch(`/send-otp/${type}/`, { method: 'GET' })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(`OTP sent to your ${type}.`);
+            } else {
+                alert('Error sending OTP.');
+            }
+        });
+}
+</script>
+
+<style>
+.profile-card {
+    border-radius: 18px;
+}
+
+/* Left sidebar */
+.profile-sidebar {
+    background: radial-gradient(circle at top left, #ff6b81, #141414);
+    color: #fff;
+}
+
+/* Profile image hover */
+.profile-pic img {
+    border: 4px solid rgba(255,255,255,0.85);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.profile-pic img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+/* Form controls */
+.profile-page .form-control {
+    border-radius: 10px;
+    border-color: #e0e0e0;
+}
+.profile-page .form-control:focus {
+    border-color: #ff6b81;
+    box-shadow: 0 0 0 0.15rem rgba(255, 107, 129, 0.25);
+}
+
+.bg-success-subtle {
+    background-color: #e6f6ec;
+}
+
+/* Small screens */
+@media (max-width: 767.98px) {
+    .profile-sidebar {
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

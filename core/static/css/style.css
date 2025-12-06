@@ -1,0 +1,125 @@
+/* General Body */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #f5f5f5;
+    padding: 80px 0;
+    text-align: center;
+}
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+.hero p {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+.hero .btn {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+}
+
+/* Features Section */
+.features {
+    padding: 80px 0;
+}
+.feature {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+.feature h3 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.feature p {
+    color: #6c757d;
+}
+
+/* CTA Section */
+.cta {
+    padding: 80px 0;
+    text-align: center;
+    color: #fff;
+}
+.cta h2 {
+    font-weight: 700;
+}
+.cta p {
+    font-size: 1.2rem;
+}
+
+/* Forms (Login/Register) */
+.form-container {
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+.form-container h2 {
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+.form-control {
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Tables */
+.table {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.table thead {
+    background-color: #0d6efd;
+    color: #fff;
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(13,110,253,0.1);
+}
+
+/* Alerts and Messages */
+.alert {
+    border-radius: 6px;
+    padding: 15px;
+}
+
+/* Footer */
+footer {
+    padding: 40px 0;
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    .cta h2 {
+        font-size: 1.8rem;
+    }
+    .features .feature {
+        margin-bottom: 30px;
+    }
+}
+
