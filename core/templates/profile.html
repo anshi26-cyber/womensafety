@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <section class="profile-page py-5">
     <div class="container">
         <div class="text-center mb-5">
@@ -10,43 +11,118 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-lg-9">
+            <div class="col-lg-10">
                 <div class="card profile-card shadow-lg border-0 rounded-4 overflow-hidden">
+
                     <div class="row g-0">
 
-                        <!-- Sidebar -->
-                        <div class="col-md-4 profile-sidebar p-4 text-white text-center">
+                        <!-- SIDEBAR -->
+                        <div class="col-md-4 profile-sidebar text-white text-center p-4">
                             <div class="profile-pic mb-3">
-                                {% if user.profile_picture %}
-                                    <img id="currentProfile" src="{{ user.profile_picture.url }}">
-                                {% else %}
-                                    <img id="currentProfile" src="https://img.icons8.com/ios-filled/150/ffffff/user-male-circle.png">
-                                {% endif %}
+                                <img id="currentProfile"
+                                     src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}https://img.icons8.com/ios-filled/150/ffffff/user-male-circle.png{% endif %}">
                             </div>
 
                             <h5>{{ user.username }}</h5>
                             <small>{{ user.email }}</small>
 
                             <input type="file" id="profileInput" class="form-control mt-3">
-                            <button id="cropBtn" class="btn btn-light mt-2" disabled>
-                                Upload
-                            </button>
+                            <button id="cropBtn" class="btn btn-light w-100 mt-2" disabled>Upload</button>
                         </div>
 
-                        <!-- Details -->
+                        <!-- FORM -->
                         <div class="col-md-8 bg-white">
                             <div class="card-body p-4">
 
                                 <form method="POST">
                                     {% csrf_token %}
 
-                                    <input type="text" name="username" value="{{ user.username }}" class="form-control mb-3">
+                                    <div class="row">
 
-                                    <input type="text" name="contact_number" value="{{ user.contact_number }}" class="form-control mb-3">
+                                        <!-- PHONE -->
+                                        <div class="col-md-6 mb-3">
+                                            <label>Phone</label>
+                                            <input type="text" id="phone" name="contact_number"
+                                                   value="{{ user.contact_number }}" class="form-control">
 
-                                    <input type="email" name="email" value="{{ user.email }}" class="form-control mb-3">
+                                            {% if not user.phone_verified %}
+                                            <button type="button" class="btn btn-sm btn-outline-primary mt-2"
+                                                    onclick="sendOtp('phone')">
+                                                Send OTP
+                                            </button>
 
-                                    <button class="btn btn-success">Save</button>
+                                            <div id="phone-otp-box" class="mt-2 d-none">
+                                                <input type="text" id="phone-otp" class="form-control mb-2"
+                                                       placeholder="Enter OTP">
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick="verifyOtp('phone')">
+                                                    Verify
+                                                </button>
+                                            </div>
+                                            {% else %}
+                                                <span class="badge bg-success mt-2">✔ Verified</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- EMAIL -->
+                                        <div class="col-md-6 mb-3">
+                                            <label>Email</label>
+                                            <input type="email" id="email" name="email"
+                                                   value="{{ user.email }}" class="form-control">
+
+                                            {% if not user.email_verified %}
+                                            <button type="button" class="btn btn-sm btn-outline-primary mt-2"
+                                                    onclick="sendOtp('email')">
+                                                Send OTP
+                                            </button>
+
+                                            <div id="email-otp-box" class="mt-2 d-none">
+                                                <input type="text" id="email-otp" class="form-control mb-2"
+                                                       placeholder="Enter OTP">
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick="verifyOtp('email')">
+                                                    Verify
+                                                </button>
+                                            </div>
+                                            {% else %}
+                                                <span class="badge bg-success mt-2">✔ Verified</span>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- AADHAAR -->
+                                        <div class="col-md-6 mb-3">
+                                            <label>Aadhaar</label>
+                                            <input type="text" id="aadhaar" name="aadhaar_number"
+                                                   value="{{ user.aadhaar_number }}" class="form-control">
+
+                                            {% if not user.aadhaar_verified %}
+                                            <button type="button" class="btn btn-sm btn-outline-primary mt-2"
+                                                    onclick="sendOtp('aadhaar')">
+                                                Send OTP
+                                            </button>
+
+                                            <div id="aadhaar-otp-box" class="mt-2 d-none">
+                                                <input type="text" id="aadhaar-otp" class="form-control mb-2"
+                                                       placeholder="Enter OTP">
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick="verifyOtp('aadhaar')">
+                                                    Verify
+                                                </button>
+                                            </div>
+                                            {% else %}
+                                                <span class="badge bg-success mt-2">✔ Verified</span>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                            ← Back
+                                        </a>
+                                        <button class="btn btn-success px-4">Save</button>
+                                    </div>
+
                                 </form>
 
                             </div>

@@ -122,10 +122,10 @@ def verify_otp(request, otp_type):
     # Aadhaar OTP verify
     if otp_type == 'aadhaar':
         if otp == getattr(user, 'aadhaar_otp', None):
-            user.is_verified = True
-            # optionally clear OTP so it can't be reused
+            user.aadhaar_verified = True   # ✅ FIX
             user.aadhaar_otp = ''
-            user.save(update_fields=['is_verified', 'aadhaar_otp'])
+            user.save(update_fields=['aadhaar_verified', 'aadhaar_otp'])
+            user.check_full_verification()   # 🔥 ADD THIS
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'error': 'Incorrect Aadhaar OTP'}, status=400)
 
@@ -135,6 +135,7 @@ def verify_otp(request, otp_type):
             user.phone_verified = True
             user.phone_otp = ''
             user.save(update_fields=['phone_verified', 'phone_otp'])
+            user.check_full_verification()   
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'error': 'Incorrect Phone OTP'}, status=400)
 
@@ -144,6 +145,7 @@ def verify_otp(request, otp_type):
             user.email_verified = True
             user.email_otp = ''
             user.save(update_fields=['email_verified', 'email_otp'])
+            user.check_full_verification()
             return JsonResponse({'success': True})
         return JsonResponse({'success': False, 'error': 'Incorrect Email OTP'}, status=400)
 
@@ -164,7 +166,7 @@ def panic_alert(request):
     # ✅ Extra safety: allow panic only if profile fully verified
     # (Aadhaar + phone + email — apne model ke hisaab se)
     if not (
-        getattr(user, 'is_verified', False)
+        getattr(user, 'aadhaar_verified', False)
         and getattr(user, 'phone_verified', False)
         and getattr(user, 'email_verified', False)
     ):
@@ -311,48 +313,55 @@ def profile(request):
     user = request.user
 
     if request.method == "POST":
-        # --------- Normal profile fields update ---------
+
+        # 👉 Check if request is AJAX (image upload)
+        if request.FILES and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            user.profile_picture = request.FILES['profile_picture']
+            user.save()
+
+            return JsonResponse({
+                "success": True,
+                "message": "Profile image updated"
+            })
+
+        # --------- Normal profile fields ---------
         user.username = request.POST.get('username') or user.username
         user.email = request.POST.get('email') or user.email
         user.contact_number = request.POST.get('contact_number') or user.contact_number
         user.aadhaar_number = request.POST.get('aadhaar_number') or user.aadhaar_number
 
-        if request.FILES.get('profile_picture'):
-            user.profile_picture = request.FILES['profile_picture']
-
-        # --------- OTP values from form ---------
+        # --------- OTP ---------
         aadhaar_otp_entered = request.POST.get('aadhaar_otp')
         phone_otp_entered   = request.POST.get('phone_otp')
         email_otp_entered   = request.POST.get('email_otp')
 
-        # --------- Aadhaar OTP verify ---------
         if aadhaar_otp_entered:
-            if aadhaar_otp_entered == getattr(user, 'aadhaar_otp', None):
-                user.is_verified = True
-                user.aadhaar_otp = ""   # clear after success
+            if aadhaar_otp_entered == user.aadhaar_otp:
+                user.aadhaar_verified = True
+                user.aadhaar_otp = ""
                 messages.success(request, "Aadhaar verified successfully.")
             else:
                 messages.error(request, "Invalid Aadhaar OTP.")
 
-        # --------- Phone OTP verify ---------
         if phone_otp_entered:
-            if phone_otp_entered == getattr(user, 'phone_otp', None):
+            if phone_otp_entered == user.phone_otp:
                 user.phone_verified = True
                 user.phone_otp = ""
-                messages.success(request, "Phone number verified successfully.")
+                messages.success(request, "Phone verified.")
             else:
                 messages.error(request, "Invalid Phone OTP.")
 
-        # --------- Email OTP verify ---------
         if email_otp_entered:
-            if email_otp_entered == getattr(user, 'email_otp', None):
+            if email_otp_entered == user.email_otp:
                 user.email_verified = True
                 user.email_otp = ""
-                messages.success(request, "Email verified successfully.")
+                messages.success(request, "Email verified.")
             else:
                 messages.error(request, "Invalid Email OTP.")
 
         user.save()
+        user.check_full_verification()
+
         return redirect('profile')
 
     return render(request, 'profile.html', {'user': user})
@@ -379,9 +388,8 @@ def dashboard(request):
     if not request.session.get('dashboard_unlocked'):
         if request.method == "POST":
             entered = request.POST.get('passcode', '').strip()
-            if entered and entered == getattr(settings, 'DASHBOARD_PASSCODE', ''):
+            if entered  == getattr(settings, 'DASHBOARD_PASSCODE', ''):
                 request.session['dashboard_unlocked'] = True
-                request.session['dashboard_unlocked_at'] = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
                 messages.success(request, "Dashboard unlocked successfully.")
                 
             else:
@@ -390,7 +398,7 @@ def dashboard(request):
 
         else:
             return render(request, 'dashboard_unlock.html')
-        alerts = PanicLog.objects.all().order_by('-timestamp')[:50]
+    alerts = PanicLog.objects.all().order_by('-timestamp')[:50]
 
     data = []
     for a in alerts:
