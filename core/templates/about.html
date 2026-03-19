@@ -3,8 +3,7 @@
 {% block content %}
 
 <!-- About Hero -->
-<section class="about-hero d-flex align-items-center justify-content-center text-center"
-         style="background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat; min-height: 55vh;">
+<section class="about-hero d-flex align-items-center justify-content-center text-center">
     <div class="container text-white">
         <h1 class="display-4 fw-bold mb-3">About Women Safety Portal</h1>
         <p class="lead mb-3">Helping women act quickly, stay safe, and stay informed when it matters the most.</p>
@@ -17,7 +16,6 @@
     <div class="container">
         <div class="row g-5 align-items-center">
 
-            <!-- Better Image Fit -->
             <div class="col-md-6">
                 <div class="image-box shadow-sm rounded-4 overflow-hidden">
                     <img src="https://images.yourstory.com/cs/wordpress/2017/03/Featured-image-7-1.jpg"
@@ -26,28 +24,24 @@
                 </div>
             </div>
 
-            <!-- Text -->
             <div class="col-md-6">
                 <h2 class="fw-bold mb-3">Our Mission</h2>
                 <p class="text-muted">
-                    We are committed to making women safer through real-time technology. Whether you are travelling, 
-                    walking alone, or in a new environment — our tools are built to act fast and keep your trusted 
-                    contacts informed instantly.
+                    We are committed to making women safer through real-time technology...
                 </p>
 
                 <p class="text-muted mb-4">
-                    Our platform brings alerts, helplines, safety guidance, and secure communication together so you 
-                    never feel alone during a stressful situation.
+                    Our platform brings alerts, helplines, safety guidance...
                 </p>
 
                 <h3 class="fw-bold mb-3">What Makes Us Different</h3>
                 <ul class="text-muted list-unstyled mb-3">
-                    <li>✔ <strong>Instant panic alerts</strong> with live location sharing</li>
-                    <li>✔ <strong>Verified helpline directory</strong> for police and emergency services</li>
-                    <li>✔ <strong>Simplified interface</strong> for quick actions under pressure</li>
-                    <li>✔ <strong>Safe travel mode</strong> with continuous location monitoring</li>
-                    <li>✔ <strong>AI-based safety suggestions</strong> coming soon</li>
-                    <li>✔ <strong>Privacy-focused design</strong> — your data stays yours</li>
+                    <li>✔ <strong>Instant panic alerts</strong></li>
+                    <li>✔ <strong>Verified helpline directory</strong></li>
+                    <li>✔ <strong>Simplified interface</strong></li>
+                    <li>✔ <strong>Safe travel mode</strong></li>
+                    <li>✔ <strong>AI-based safety suggestions</strong></li>
+                    <li>✔ <strong>Privacy-focused design</strong></li>
                 </ul>
 
                 <a href="{% url 'home' %}" class="btn btn-gradient btn-lg mt-2">
@@ -61,75 +55,25 @@
             <div class="col-md-4">
                 <div class="info-card h-100 p-4 rounded-4 shadow-sm bg-white">
                     <h5 class="fw-semibold mb-2">Safety Mode</h5>
-                    <p class="text-muted mb-0">
-                        Enable continuous tracking until you reach your destination. Your contacts stay updated automatically.
-                    </p>
+                    <p class="text-muted mb-0">Enable continuous tracking...</p>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="info-card h-100 p-4 rounded-4 shadow-sm bg-white">
                     <h5 class="fw-semibold mb-2">Smart Alerts</h5>
-                    <p class="text-muted mb-0">
-                        The system detects inactivity or unusual movement and can auto-alert your emergency contacts.
-                    </p>
+                    <p class="text-muted mb-0">The system detects inactivity...</p>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="info-card h-100 p-4 rounded-4 shadow-sm bg-white">
                     <h5 class="fw-semibold mb-2">Trusted Circle</h5>
-                    <p class="text-muted mb-0">
-                        Add people who will always get notified during emergencies, without needing manual confirmation.
-                    </p>
+                    <p class="text-muted mb-0">Add people who will always get notified...</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CSS -->
-<style>
-.text-light-50 {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* Better image fit */
-.image-box {
-    width: 100%;
-    height: 330px; /* set perfect height */
-    border-radius: 20px;
-}
-.object-cover {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
-
-/* Info cards */
-.info-card {
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: transform 0.25s, box-shadow 0.25s;
-}
-.info-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-}
-
-/* Gradient Button */
-.btn-gradient {
-    background: linear-gradient(90deg, #ff416c, #ff4b2b);
-    color: #fff;
-    border-radius: 50px;
-    font-weight: 600;
-    padding-inline: 32px;
-    transition: 0.3s;
-}
-.btn-gradient:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 22px rgba(0,0,0,0.3);
-}
-</style>
-
 {% endblock %}
-

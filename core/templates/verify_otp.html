@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="container py-5">
+
+<div class="container py-5 verify-page">
     <h2 class="mb-4 text-center">Verify Your Phone & Email</h2>
-    <form method="POST" class="mx-auto" style="max-width:400px;">
+
+    <form method="POST" class="verify-form mx-auto">
         {% csrf_token %}
+
         {% if not user.phone_verified %}
         <div class="mb-3">
-            <label>Phone OTP</label>
+            <label class="form-label">Phone OTP</label>
             <input type="text" name="phone_otp" class="form-control" placeholder="Enter Phone OTP">
         </div>
         {% endif %}
 
         {% if not user.email_verified %}
         <div class="mb-3">
-            <label>Email OTP</label>
+            <label class="form-label">Email OTP</label>
             <input type="text" name="email_otp" class="form-control" placeholder="Enter Email OTP">
         </div>
         {% endif %}
 
-        <button type="submit" class="btn btn-primary w-100">Verify</button>
+        <button type="submit" class="btn btn-primary w-100">
+            Verify
+        </button>
     </form>
 </div>
+
 {% endblock %}

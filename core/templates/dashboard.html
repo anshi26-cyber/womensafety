@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 
-<section class="dashboard-section py-3" style="background:#f3f4f8;">
+<!-- ✅ Wrapper div (IMPORTANT) -->
+<div id="dashboard-root" 
+     data-alerts='{{ panic_alerts_json|default:"[]"|escapejs }}'>
+
+<section class="dashboard-section py-3">
   <div class="container-fluid">
 
     <!-- Top header -->
     <div class="dashboard-header card shadow-sm border-0 rounded-4 mb-3 px-3 px-md-4 py-3 bg-white d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
       <div>
-        <h2 class="mb-1 fw-semibold" style="font-size:1.35rem;">Emergency Panic Alerts Dashboard</h2>
+        <h2 class="mb-1 fw-semibold dashboard-title">Emergency Panic Alerts Dashboard</h2>
         <p class="text-muted mb-0 small">Live locations, user profiles, and recent alerts for response teams.</p>
       </div>
       <div class="d-flex flex-wrap align-items-center gap-2">
@@ -15,28 +21,31 @@
           ● Live feed active
         </span>
         <span class="badge rounded-pill bg-secondary-subtle text-muted small px-3 py-2 d-flex align-items-center gap-1">
-          <span style="width:10px;height:10px;border-radius:50%;background:#d9534f;display:inline-block;"></span>
+          <span class="dot"></span>
           Active alert marker
         </span>
       </div>
     </div>
 
     <div class="dashboard-body d-flex flex-column flex-lg-row gap-3">
-      <!-- Left: map + filters -->
+
+      <!-- Map -->
       <div class="map-column card shadow-sm border-0 rounded-4 p-3 bg-white flex-grow-1 d-flex flex-column">
+
+        <!-- Filters -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
           <div class="filters d-flex flex-wrap align-items-center gap-2">
             <label class="filter-label small text-muted">
               Start:
-              <input id="filter-start" type="date" class="form-control form-control-sm d-inline-block" style="width:150px;">
+              <input id="filter-start" type="date" class="form-control form-control-sm date-input">
             </label>
             <label class="filter-label small text-muted">
               End:
-              <input id="filter-end" type="date" class="form-control form-control-sm d-inline-block" style="width:150px;">
+              <input id="filter-end" type="date" class="form-control form-control-sm date-input">
             </label>
             <div class="form-check form-check-sm d-flex align-items-center">
-              <input id="filter-verified" type="checkbox" class="form-check-input me-1" style="margin-top:0;">
-              <label class="form-check-label small text-muted" for="filter-verified">
+              <input id="filter-verified" type="checkbox" class="form-check-input me-1">
+              <label class="form-check-label small text-muted">
                 Verified users only
               </label>
             </div>
@@ -52,11 +61,11 @@
         <div id="map" class="flex-grow-1"></div>
       </div>
 
-      <!-- Right: history panel -->
+      <!-- History -->
       <aside class="history-column card shadow-sm border-0 rounded-4 bg-white">
         <div class="history-header d-flex flex-wrap justify-content-between align-items-center px-3 py-3 border-bottom">
           <div>
-            <h3 class="mb-0 fw-semibold" style="font-size:1rem;">Alert history</h3>
+            <h3 class="mb-0 fw-semibold">Alert history</h3>
             <small class="text-muted">Most recent alerts, newest first.</small>
           </div>
           <div class="history-controls d-flex align-items-center gap-2 mt-2 mt-sm-0">
@@ -67,469 +76,20 @@
         </div>
         <div id="history-list" class="p-2"></div>
       </aside>
+
     </div>
   </div>
 </section>
 
-<!-- Toast notification -->
+</div> <!-- ✅ Wrapper end -->
+
+<!-- Toast -->
 <div id="toast" class="toast-hide"></div>
 
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<script>
-/* -------------------------
-   Helpers & initial data
-   ------------------------- */
-let initialAlerts = [];
-try {
-  initialAlerts = JSON.parse('{{ panic_alerts_json|default:"[]"|escapejs }}') || [];
-} catch (e) {
-  initialAlerts = [];
-}
-const seenAlertIds = new Set();
-const markersById = new Map();
-
-/* -------------------------
-   Map init
-   ------------------------- */
-const map = L.map('map', { zoomControl: true, attributionControl: false })
-  .setView([20.5937,78.9629], 5);
-
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-  subdomains: 'abcd',
-  maxZoom: 19
-}).addTo(map);
-
-map.whenReady(() => setTimeout(()=>map.invalidateSize(), 120));
-
-function escapeHtml(s){
-  if (s === undefined || s === null) return '';
-  return String(s)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;');
-}
-
-/* -------------------------
-   Build popup HTML
-   ------------------------- */
-function buildPopup(a){
-  const lat = escapeHtml(a.latitude || '');
-  const lng = escapeHtml(a.longitude || '');
-  const pic = a.profile_picture_url
-    ? `<img src="${escapeHtml(a.profile_picture_url)}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin-bottom:6px;border:3px solid #fff;">`
-    : `<div style="width:72px;height:72px;border-radius:50%;background:#eee;margin-bottom:6px;display:inline-block;"></div>`;
-
-  return `
-    <div style="min-width:260px;font-family:Arial,sans-serif;color:#222">
-      <div style="text-align:center">${pic}</div>
-      <h4 style="text-align:center;margin:6px 0;font-size:15px;">
-        ${escapeHtml(a.full_name || a.username || 'Unknown')}
-      </h4>
-      <div style="font-size:13px;color:#444;text-align:center">
-        <strong>⏰ Reported:</strong> ${escapeHtml(a.timestamp)}<br>
-        <strong>📍</strong> ${lat}, ${lng}
-      </div>
-      <div style="font-size:13px;color:#333;margin-top:6px;text-align:left">
-        ${a.contact_number ? `<strong>📞</strong> <a href="tel:${escapeHtml(a.contact_number)}">${escapeHtml(a.contact_number)}</a><br>` : ''}
-        ${a.email ? `<strong>✉️</strong> <a href="mailto:${escapeHtml(a.email)}">${escapeHtml(a.email)}</a><br>` : ''}
-        ${a.aadhaar_number ? `<strong>🆔</strong> ${escapeHtml(a.aadhaar_number)}<br>` : ''}
-        ${a.description ? `<strong>💬</strong> ${escapeHtml(a.description)}<br>` : ''}
-      </div>
-      <div style="text-align:center;margin-top:8px;">
-        <a class="btn-link-map" target="_blank"
-           href="https://www.google.com/maps/search/?api=1&query=${lat},${lng}">
-           Open in Google Maps
-        </a>
-      </div>
-    </div>
-  `;
-}
-
-/* -------------------------
-   Add marker (incremental)
-   ------------------------- */
-function addMarker(a, focus=false){
-  if (!a || !a.id || seenAlertIds.has(a.id)) return;
-  if (!a.latitude || !a.longitude) return;
-  const lat = parseFloat(a.latitude), lng = parseFloat(a.longitude);
-  if (Number.isNaN(lat) || Number.isNaN(lng)) return;
-
-  const circle = L.circleMarker([lat,lng], {
-    radius: 7,
-    color: '#d9534f',
-    fillColor: '#d9534f',
-    fillOpacity: 0.95,
-    weight: 1
-  }).addTo(map);
-
-  circle.bindPopup(buildPopup(a), {maxWidth: 320});
-  markersById.set(a.id, circle);
-  seenAlertIds.add(a.id);
-
-  if (focus){
-    map.setView([lat,lng], 13);
-    circle.openPopup();
-  }
-}
-
-/* -------------------------
-   History list UI
-   ------------------------- */
-let currentPage = 1, perPage = 20;
-
-function renderHistoryList(alerts, meta){
-  const list = document.getElementById('history-list');
-  list.innerHTML = '';
-
-  if (!alerts.length) {
-    list.innerHTML = '<div class="empty text-center text-muted py-3 small">No alerts found for selected filters.</div>';
-    document.getElementById('page-info').innerText = '';
-    return;
-  }
-
-  alerts.forEach(a => {
-    const el = document.createElement('div');
-    el.className = 'history-item';
-    el.innerHTML = `
-      <div class="h-top">
-        <strong>${escapeHtml(a.full_name || a.username || 'Unknown')}</strong>
-        <span class="time">${escapeHtml(a.timestamp)}</span>
-      </div>
-      <div class="h-body">
-        ${a.description ? escapeHtml(a.description) : '<i class="text-muted">No message provided</i>'}
-      </div>
-      <div class="h-bottom">
-        <small class="coords text-muted">${escapeHtml(a.latitude)}, ${escapeHtml(a.longitude)}</small>
-        <button class="btn btn-sm btn-outline-primary open-on-map" data-id="${a.id}">Open on map</button>
-      </div>
-    `;
-    list.appendChild(el);
-
-    el.querySelector('.open-on-map').addEventListener('click', () => {
-      const marker = markersById.get(a.id);
-      if (marker){
-        map.setView([parseFloat(a.latitude), parseFloat(a.longitude)], 13);
-        marker.openPopup();
-      } else {
-        addMarker(a, true);
-      }
-    });
-  });
-
-  document.getElementById('page-info').innerText =
-    `Page ${meta.page} / ${meta.pages} • Total ${meta.total}`;
-}
-
-/* -------------------------
-   Filters & fetch logic
-   ------------------------- */
-function getFilterParams(extra={}) {
-  const params = {};
-  const start = document.getElementById('filter-start').value;
-  const end = document.getElementById('filter-end').value;
-  const verified = document.getElementById('filter-verified').checked;
-
-  if (start) params.start_date = start;
-  if (end) params.end_date = end;
-  if (verified) params.verified = 'true';
-
-  if (extra.minlat) params.minlat = extra.minlat;
-  if (extra.minlng) params.minlng = extra.minlng;
-  if (extra.maxlat) params.maxlat = extra.maxlat;
-  if (extra.maxlng) params.maxlng = extra.maxlng;
-
-  params.n = perPage;
-  params.page = currentPage;
-  return params;
-}
-
-function buildQuery(params){
-  return Object.keys(params)
-    .map(k => encodeURIComponent(k)+'='+encodeURIComponent(params[k]))
-    .join('&');
-}
-
-/* -------------------------
-   Polling + notification logic
-   ------------------------- */
-let soundEnabled = true;
-
-function playBeep() {
-  try{
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = 'sine';
-    o.frequency.value = 880;
-    o.connect(g);
-    g.connect(ctx.destination);
-    g.gain.setValueAtTime(0.0001, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.1, ctx.currentTime + 0.01);
-    o.start();
-    setTimeout(() => { o.stop(); ctx.close(); }, 200);
-  } catch(e){
-    console.warn('web audio not available', e);
-  }
-}
-
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.className = 'toast-show';
-  t.innerHTML = msg;
-  setTimeout(() => t.className = 'toast-hide', 4500);
-}
-
-async function fetchAlertsForHistory(bboxExtra=null){
-  const params = getFilterParams(bboxExtra || {});
-  const q = buildQuery(params);
-
-  try {
-    const res = await fetch('/api/panic-alerts/?'+q, {cache:'no-store'});
-    if (!res.ok) return;
-
-    const data = await res.json();
-    if (data && data.alerts){
-      renderHistoryList(data.alerts, data.meta || {page:1,pages:1,total:data.alerts.length});
-      data.alerts.forEach(a => addMarker(a, false));
-
-      if (data.alerts.length > 0){
-        const newest = data.alerts[0];
-        if (!seenAlertIds.has(newest.id)){
-          showToast(`New alert from ${escapeHtml(newest.username || newest.full_name || 'user')} at ${escapeHtml(newest.timestamp)}`);
-          if (soundEnabled) playBeep();
-        }
-      }
-    }
-  } catch (e){
-    console.error('history fetch failed', e);
-  }
-}
-
-async function pollNewAlerts(bboxExtra=null){
-  const params = getFilterParams(bboxExtra || {});
-  params.n = 20;
-  params.page = 1;
-  const q = buildQuery(params);
-
-  try {
-    const res = await fetch('/api/panic-alerts/?'+q, {cache:'no-store'});
-    if (!res.ok) return;
-
-    const data = await res.json();
-    if (data && data.alerts){
-      for (let i = 0; i < data.alerts.length; i++){
-        const a = data.alerts[i];
-        if (!seenAlertIds.has(a.id)){
-          addMarker(a, false);
-          if (i === 0){
-            showToast(`New panic: ${escapeHtml(a.full_name || a.username || 'user')} • ${escapeHtml(a.timestamp)}`);
-            if (soundEnabled) playBeep();
-          }
-        }
-      }
-    }
-  } catch(e){
-    console.error('poll error', e);
-  }
-}
-
-/* -------------------------
-   Controls bindings
-   ------------------------- */
-document.getElementById('apply-filters').addEventListener('click', () => {
-  currentPage = 1;
-  fetchAlertsForHistory();
-});
-document.getElementById('clear-filters').addEventListener('click', () => {
-  document.getElementById('filter-start').value = '';
-  document.getElementById('filter-end').value = '';
-  document.getElementById('filter-verified').checked = false;
-  currentPage = 1;
-  fetchAlertsForHistory();
-});
-document.getElementById('prev-page').addEventListener('click', () => {
-  if (currentPage > 1){
-    currentPage--;
-    fetchAlertsForHistory();
-  }
-});
-document.getElementById('next-page').addEventListener('click', () => {
-  currentPage++;
-  fetchAlertsForHistory();
-});
-document.getElementById('use-bounds').addEventListener('click', () => {
-  const b = map.getBounds();
-  const bboxExtra = {
-    minlat: b.getSouth(),
-    minlng: b.getWest(),
-    maxlat: b.getNorth(),
-    maxlng: b.getEast()
-  };
-  window.currentBBox = bboxExtra;
-  currentPage = 1;
-  fetchAlertsForHistory(bboxExtra);
-});
-
-/* initial load and polling */
-fetchAlertsForHistory();
-setInterval(() => pollNewAlerts(window.currentBBox || null), 2000);
-
-/* render initial server alerts, if any */
-if (initialAlerts && initialAlerts.length){
-  for (let i = initialAlerts.length - 1; i >= 0; i--){
-    addMarker(initialAlerts[i], false);
-  }
-}
-
-/* toast click to mute/unmute notifications */
-document.getElementById('toast').addEventListener('click', () => {
-  soundEnabled = !soundEnabled;
-  const t = document.getElementById('toast');
-  t.innerText = soundEnabled
-    ? 'Notifications: sound ON (click to mute)'
-    : 'Notifications: muted (click to unmute)';
-  setTimeout(() => t.className = 'toast-hide', 1400);
-});
-</script>
-
-<style>
-.dashboard-section {
-  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-}
-
-/* Layout */
-.dashboard-body {
-  min-height: calc(100vh - 160px);
-}
-
-.map-column {
-  min-height: 420px;
-}
-
-#map {
-  width: 100%;
-  border-radius: 14px;
-  min-height: 320px;
-  box-shadow: inset 0 1px 4px rgba(0,0,0,0.04);
-}
-
-/* History */
-.history-column {
-  width: 360px;
-  max-height: calc(100vh - 180px);
-  display: flex;
-  flex-direction: column;
-}
-
-#history-list {
-  overflow-y: auto;
-  flex-grow: 1;
-}
-
-.history-item {
-  padding: 10px 8px;
-  border-bottom: 1px solid #f1f1f1;
-  font-size: 13px;
-}
-
-.history-item:last-child {
-  border-bottom: none;
-}
-
-.history-item .h-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.history-item .time {
-  font-size: 11px;
-  color: #888;
-}
-
-.history-item .h-body {
-  margin-top: 4px;
-  color: #444;
-}
-
-.history-item .h-bottom {
-  margin-top: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.history-item .coords {
-  font-size: 11px;
-}
-
-/* Buttons */
-.btn-link-map {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid #007bff;
-  color: #007bff;
-  font-size: 11px;
-  text-decoration: none;
-}
-.btn-link-map:hover {
-  background:#007bff;
-  color:#fff;
-}
-
-/* Toast */
-#toast {
-  position: fixed;
-  right: 20px;
-  top: 90px;
-  background: rgba(0,0,0,0.87);
-  color: #fff;
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 13px;
-  z-index: 2000;
-  transition: transform 0.18s, opacity 0.18s;
-  max-width: 280px;
-}
-.toast-hide {
-  opacity: 0;
-  transform: translateY(-8px);
-  pointer-events: none;
-}
-.toast-show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* Subtle color helpers */
-.bg-danger-subtle { background-color:#ffe5e8; }
-.bg-secondary-subtle { background-color:#eceff3; }
-
-/* Responsive */
-@media (max-width: 991.98px) {
-  .history-column {
-    width: 100%;
-    max-height: 320px;
-    margin-bottom: 8px;
-    order: 2;
-  }
-  .map-column {
-    order: 1;
-  }
-}
-
-@media (max-width: 576px) {
-  .dashboard-header h2 {
-    font-size: 1.1rem;
-  }
-}
-</style>
+<!-- Custom JS -->
+<script src="{% static 'js/dashboard.js' %}"></script>
 
 {% endblock %}

@@ -1,401 +1,97 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
 <!-- Hero Section -->
-<section 
-    class="hero d-flex align-items-center position-relative text-center text-white"
-    style="
-        background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)), 
-                    url('https://imageio.forbes.com/specials-images/imageserve/65ba8b542b04f8cc11597595/Friendship/960x0.jpg?format=jpg&width=960') 
-                    center/cover no-repeat;
-        min-height: 70vh;
-    "
->
+<section class="hero d-flex align-items-center position-relative text-center text-white">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
-                <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown">
+                <h1 class="display-4 fw-bold mb-3">
                     Stay Safe. Stay In Control.
                 </h1>
-                <p class="lead mb-4 animate__animated animate__fadeInUp">
-                    Instant panic alerts, verified helplines, and practical safety guidance in one secure platform.
+                <p class="lead mb-4">
+                    Instant panic alerts, verified helplines, and safety guidance.
                 </p>
 
                 {% if not user.is_authenticated %}
-                    <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mb-3 animate__animated animate__fadeInUp">
-                        <a href="{% url 'register' %}" class="btn btn-gradient btn-lg px-5 py-3 shadow-lg">
-                            Create Account
-                        </a>
-                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-5 py-3 shadow-lg">
-                            Login
-                        </a>
-                    </div>
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mb-3">
+                    <a href="{% url 'register' %}" class="btn btn-gradient btn-lg">
+                        Create Account
+                    </a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                        Login
+                    </a>
+                </div>
                 {% endif %}
 
-                <a href="{% url 'about' %}" class="btn btn-info btn-lg mt-2 shadow-lg animate__animated animate__fadeInUp">
-                    Learn More About Us
+                <a href="{% url 'about' %}" class="btn btn-info btn-lg mt-2">
+                    Learn More
                 </a>
 
                 <p class="mt-4 small text-light-50">
-                    Built for real-time support, privacy, and peace of mind.
+                    Built for safety and privacy.
                 </p>
             </div>
         </div>
     </div>
 
-  {% if user.is_authenticated %}
-    {% if user.is_verified and user.phone_verified and user.email_verified %}
-        <button 
-            id="panic-btn" 
-            class="btn shadow-lg position-absolute"
-            aria-label="Send panic alert"
-            style="top: 20px; right: 20px; z-index: 10;"
-        >
+    <!-- Panic Button -->
+    {% if user.is_authenticated and user.is_verified and user.phone_verified and user.email_verified %}
+        <button id="panic-btn" class="btn position-absolute panic-btn">
             PANIC ALERT
         </button>
     {% else %}
-        <button 
-            class="btn shadow-lg position-absolute"
-            style="top: 20px; right: 20px; z-index: 10; cursor:not-allowed; opacity:0.7;"
-            disabled
-            title="Complete profile verification to use panic alert"
-        >
-            PANIC ALERT (Locked)
+        <button class="btn position-absolute panic-btn disabled" disabled>
+            PANIC ALERT
         </button>
     {% endif %}
-
-{% else %}
-   
-    <button 
-        class="btn shadow-lg position-absolute"
-        style="top: 20px; right: 20px; z-index: 10; cursor:not-allowed; opacity:0.7;"
-        disabled
-        title="Login to enable panic alert"
-    >
-        PANIC ALERT (Login first)
-    </button>
-{% endif %}
 </section>
 
-
-<!-- Features Section -->
+<!-- Features -->
 <section class="features py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold mb-2">What You Can Do With Our Portal</h2>
-            <p class="text-muted mb-0">
-                A focused toolkit designed to keep you safer and more prepared, wherever you are.
-            </p>
-        </div>
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Features</h2>
 
-        <div class="row g-4 text-center justify-content-center">
-            <!-- Feature 1 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card h-100 p-4">
-                    <img src="https://img.icons8.com/color/96/sos.png" alt="Panic alert icon" class="mb-3">
-                    <h4 class="fw-semibold mb-3">Instant Panic Alerts</h4>
-                    <p class="text-muted mb-0">
-                        Share your live location with your trusted contacts with a single tap in emergencies.
-                    </p>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card p-4">
+                    <h4>Instant Alerts</h4>
+                    <p>Send your live location instantly.</p>
                 </div>
             </div>
 
-            <!-- Feature 2 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card h-100 p-4">
-                    <img src="https://img.icons8.com/color/96/customer-support.png" alt="Helpline support icon" class="mb-3">
-                    <h4 class="fw-semibold mb-3">Verified Helplines</h4>
-                    <p class="text-muted mb-0">
-                        Quickly reach verified numbers for police, medical help, counseling services, and NGOs.
-                    </p>
+            <div class="col-md-4">
+                <div class="feature-card p-4">
+                    <h4>Helplines</h4>
+                    <p>Access emergency contacts quickly.</p>
                 </div>
             </div>
 
-            <!-- Feature 3 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card h-100 p-4">
-                    <img src="https://img.icons8.com/color/96/security-checked.png" alt="Safety checklist icon" class="mb-3">
-                    <h4 class="fw-semibold mb-3">Practical Safety Tips</h4>
-                    <p class="text-muted mb-0">
-                        Access easy-to-follow tips for daily commutes, travel, late-night routes, and online safety.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Feature 4 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card h-100 p-4">
-                    <img src="https://img.icons8.com/color/96/map-marker.png" alt="Location tracking icon" class="mb-3">
-                    <h4 class="fw-semibold mb-3">Secure Location Sharing</h4>
-                    <p class="text-muted mb-0">
-                        Let selected contacts follow your live route when you feel unsafe or are traveling alone.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Feature 5 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="feature-card h-100 p-4">
-                    <img src="https://img.icons8.com/color/96/data-protection.png" alt="Data protection icon" class="mb-3">
-                    <h4 class="fw-semibold mb-3">Data Security & Privacy</h4>
-                    <p class="text-muted mb-0">
-                        Your information is encrypted, access-controlled, and never shared without your consent.
-                    </p>
+            <div class="col-md-4">
+                <div class="feature-card p-4">
+                    <h4>Safety Tips</h4>
+                    <p>Stay prepared in every situation.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Testimonials Section -->
-<section class="testimonials py-5 bg-white">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold mb-2">What Our Users Say</h2>
-            <p class="text-muted mb-0">
-                Honest feedback from people who rely on our portal in real situations.
-            </p>
-        </div>
-
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-5">
-                <div class="testimonial-card p-4 shadow-sm rounded bg-white h-100">
-                    <p class="mb-3">
-                        “The panic button helped me notify my family instantly when I felt unsafe. It worked smoothly and quickly.”
-                    </p>
-                    <h6 class="fw-bold mb-0">Riya, Mumbai</h6>
-                    <span class="text-muted small">College Student</span>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <div class="testimonial-card p-4 shadow-sm rounded bg-white h-100">
-                    <p class="mb-3">
-                        “All important helpline numbers are in one place. In a tense moment, that convenience really matters.”
-                    </p>
-                    <h6 class="fw-bold mb-0">Ayesha, Delhi</h6>
-                    <span class="text-muted small">Working Professional</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Call to Action -->
+<!-- CTA -->
 <section class="py-5">
-    <div class="container">
-        <div class="cta-box cta text-center text-white py-5 px-3 px-md-5 mx-auto">
-            <h2 class="fw-bold mb-3">Start Building Your Safety Net Today</h2>
-            <p class="mb-4 lead">
-                Create your account, add your trusted contacts, and be prepared with alerts and helplines when you need them.
-            </p>
-            <a href="{% url 'register' %}" class="btn btn-gradient btn-lg shadow-lg px-5 py-3">
+    <div class="container text-center">
+        <div class="cta-box text-white p-5">
+            <h2>Start Now</h2>
+            <a href="{% url 'register' %}" class="btn btn-gradient">
                 Get Started
             </a>
         </div>
     </div>
 </section>
 
-<!-- CSS -->
-<style>
-body {
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.7;
-    background-color: #f8f9fa;
-}
-
-/* Utility */
-.text-light-50 {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* Hero */
-.hero .btn {
-    border-radius: 999px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-gradient {
-    background: linear-gradient(90deg, #ff416c, #ff4b2b);
-    color: #fff;
-    border: none;
-}
-
-.btn-gradient:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    color: #fff;
-}
-
-/* Feature Cards */
-.feature-card {
-    background: #fff;
-    border-radius: 18px;
-    border: 1px solid rgba(0,0,0,0.03);
-    transition: all 0.3s ease;
-}
-
-.feature-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 14px 35px rgba(0,0,0,0.12);
-}
-
-/* Testimonials */
-.testimonial-card {
-    border-radius: 16px;
-    border: 1px solid rgba(0,0,0,0.03);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.testimonial-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
-}
-
-/* CTA */
-.cta {
-    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.7)), 
-                url('https://images.unsplash.com/photo-1596496055173-62c7428329f2?auto=format&fit=crop&w=1600&q=80') 
-                center/cover no-repeat;
-}
-
-.cta-box {
-    max-width: 900px;
-    border-radius: 20px;
-    box-shadow: 0 18px 45px rgba(0,0,0,0.3);
-}
-
-.cta .btn-gradient {
-    border-radius: 999px;
-    font-weight: 600;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.cta .btn-gradient:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-}
-
-/* Buttons */
-.btn-info {
-    border-radius: 999px;
-    font-weight: 500;
-    padding: 12px 30px;
-    transition: all 0.3s ease;
-}
-
-.btn-info:hover {
-    transform: translateY(-2px);
-    background-color: #17a2b8 !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-}
-
-/* Panic Button */
-#panic-btn {
-    font-weight: 700;
-    font-size: 0.95rem;
-    cursor: pointer;
-    background: linear-gradient(45deg, #ff416c, #ff4b2b);
-    color: #fff;
-    border: none;
-    padding: 14px 26px;
-    border-radius: 999px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    animation: pulse 2s infinite;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-#panic-btn.disabled {
-    opacity: 0.8;
-    cursor: not-allowed;
-    animation: none;
-}
-
-@keyframes pulse {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(1.08); }
-    100% { transform: scale(1); }
-}
-
-/* Responsive tweaks */
-@media (max-width: 576px) {
-    .hero {
-        padding-top: 5rem;
-        padding-bottom: 4rem;
-    }
-
-    #panic-btn {
-        padding: 12px 20px;
-        font-size: 0.85rem;
-    }
-}
-</style>
-
-<!-- JS for Panic Button -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const panicBtn = document.getElementById('panic-btn');
-
-    if (panicBtn) {
-        panicBtn.addEventListener('click', function () {
-            if (!navigator.geolocation) {
-                alert('Geolocation is not supported by your browser.');
-                return;
-            }
-
-            // Prevent multiple clicks
-            panicBtn.classList.add('disabled');
-            panicBtn.disabled = true;
-            const originalText = panicBtn.innerText;
-            panicBtn.innerText = 'Sending...';
-
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    const payload = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                    };
-
-                    fetch("{% url 'panic_alert' %}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify(payload)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Panic alert sent successfully to your emergency contacts.');
-                        } else {
-                            alert('Unable to send alert. Please try again.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        alert('An error occurred while sending the alert.');
-                    })
-                    .finally(() => {
-                        panicBtn.classList.remove('disabled');
-                        panicBtn.disabled = false;
-                        panicBtn.innerText = originalText;
-                    });
-                },
-                function (error) {
-                    console.error(error);
-                    alert('Unable to access your location. Please allow location permission in your browser settings.');
-                    panicBtn.classList.remove('disabled');
-                    panicBtn.disabled = false;
-                    panicBtn.innerText = originalText;
-                }
-            );
-        });
-    }
-});
-</script>
+<!-- External JS -->
+<script src="{% static 'js/home.js' %}"></script>
 
 {% endblock %}
