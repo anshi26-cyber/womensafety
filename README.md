@@ -59,12 +59,6 @@ This application is useful for women to ensure safety while traveling, especiall
 
 ---
 
-## 📷 Screenshots
-
-(Add your app screenshots here)
-
----
-
 ## 📂 Installation
 
 1. Clone the repository
