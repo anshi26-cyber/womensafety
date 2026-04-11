@@ -95,6 +95,6 @@ This project is open-source and available under the MIT License.
 
 ## 👩‍💻 Author
 
-**Anshika Singh**
+**Anshika Kumari**
 B.Tech CSE (AI & ML)
 Passionate about building impactful tech solutions 🚀
