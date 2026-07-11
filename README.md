@@ -1,100 +1,267 @@
-# 🚨 Women Safety Application (SheSafe)
+# 🚨 SheSafe – Women Safety Web Application
 
-## 📌 Overview
+<p align="center">
 
-Women Safety Application (SheSafe) is designed to enhance personal safety by providing real-time emergency support, location tracking, and access to nearby safety resources. The app empowers users to quickly seek help and stay सुरक्षित in critical situations.
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)
+![Django](https://img.shields.io/badge/Django-Framework-darkgreen?style=for-the-badge&logo=django)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)
+![HTML5](https://img.shields.io/badge/HTML5-orange?style=for-the-badge&logo=html5)
+![CSS3](https://img.shields.io/badge/CSS3-blue?style=for-the-badge&logo=css3)
+![Render](https://img.shields.io/badge/Deployment-Render-46E3B7?style=for-the-badge&logo=render)
+![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)
 
----
+</p>
 
-## 🎯 Features
-
-### 📍 Emergency Alert System
-
-* Send instant SOS alerts
-* Share live location with emergency contacts
-
-### 📸 Evidence Capture & Sharing
-
-* Capture photos in emergency situations
-* Upload and share via cloud storage
-
-### 🗺️ Nearby Safe Places
-
-* Find nearby police stations, hospitals, and transport facilities
-* Integrated with Google Maps for real-time navigation
-
-### ⭐ Area Safety Rating
-
-* Users can rate locations based on safety
-* Helps others identify safe and unsafe areas
-
-### 🔐 User Authentication
-
-* Secure login/signup system
-* Prevents misuse and fake data
+A **full-stack Women Safety Web Application** built using **Django** to provide emergency assistance, secure authentication, live location support, and quick access to nearby emergency services. The platform aims to improve women's safety through technology by enabling users to seek help quickly and efficiently.
 
 ---
 
-## 🛠️ Tech Stack
+# 🌐 Live Demo
 
-* **Frontend:** HTML, CSS, JavaScript, Django
-* **Backend:** Python
-* **Database & Cloud:** Firebase
-* **Maps Integration:** Google Maps API
+🔗 **https://womensafety-f5tl.onrender.com**
 
 ---
 
-## 🚀 Future Enhancements
+# 📖 Overview
 
-* AI-based safest route recommendation
-* Voice activation (e.g., "Help")
-* Shake detection for SOS trigger
-* Integration with police emergency services
+SheSafe is a web application designed to enhance women's safety by providing emergency support, secure user authentication, location-based services, and quick access to nearby police stations and hospitals. The application focuses on delivering a simple, responsive, and reliable user experience during emergency situations.
 
 ---
 
-## 💡 Use Case
+# ✨ Features
 
-This application is useful for women to ensure safety while traveling, especially in unknown or high-risk areas, by enabling quick access to help and safety information.
+### 🚨 Emergency Assistance
+- Instant SOS support
+- Emergency contact access
+- Quick emergency response interface
+
+### 🔐 Secure Authentication
+- User Registration & Login
+- OTP Verification using Twilio
+- Secure Profile Management
+
+### 📍 Location Services
+- Nearby Police Stations
+- Nearby Hospitals
+- Google Maps Integration
+- Real-time Navigation Support
+
+### 👨‍💼 Admin Dashboard
+- User Management
+- Emergency Activity Monitoring
+- Administrative Controls
+
+### 📱 Responsive Design
+- Mobile-Friendly Interface
+- Simple & User-Friendly Design
+- Responsive Layout
 
 ---
 
-## 📂 Installation
+# 🛠️ Tech Stack
 
-1. Clone the repository
+| Category | Technologies |
+|----------|--------------|
+| **Backend** | Python, Django |
+| **Frontend** | HTML, CSS, JavaScript |
+| **Database** | SQLite |
+| **APIs** | Twilio API, Google Maps API |
+| **Deployment** | Render |
+| **Version Control** | Git & GitHub |
+
+---
+
+# 📸 Screenshots
+
+## 🏠 Home Page
+
+![Home](screenshots/homepage.png)
+
+---
+
+## 👤 Profile Page
+
+![Profile](screenshots/profile.png)
+
+---
+
+## 🚨 Helpline Page
+
+![Helpline](screenshots/helpline.png)
+
+---
+
+## ⚙️ Admin Dashboard
+
+![Dashboard](screenshots/admindashboard.png)
+
+---
+
+## ℹ️ About Page
+
+![About](screenshots/aboutpage.png)
+
+---
+
+# 📂 Project Structure
+
+```text
+womensafety/
+│
+├── core/
+├── media/
+├── screenshots/
+├── staticfiles/
+├── womensafety/
+├── manage.py
+├── requirements.txt
+├── Procfile
+├── README.md
+└── LICENSE
+```
+
+---
+
+# ⚙️ Installation
+
+### Clone the Repository
 
 ```bash
 git clone https://github.com/anshi26-cyber/womensafety.git
 ```
 
-2. Navigate to the project directory
+### Navigate to Project
 
 ```bash
 cd womensafety
 ```
 
-3. Run the application
+### Create a Virtual Environment
 
 ```bash
-python app.py
+python -m venv venv
+```
+
+### Activate Virtual Environment
+
+**Windows**
+
+```bash
+venv\Scripts\activate
+```
+
+**Linux / macOS**
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Apply Migrations
+
+```bash
+python manage.py migrate
+```
+
+### Run the Development Server
+
+```bash
+python manage.py runserver
+```
+
+Open your browser and visit:
+
+```
+http://127.0.0.1:8000/
 ```
 
 ---
 
-## 🤝 Contributing
+# 🔗 Third-Party Integrations
 
-Contributions are welcome! Feel free to fork the repo and submit a pull request.
-
----
-
-## 📜 License
-
-This project is open-source and available under the MIT License.
+- 📍 Google Maps API
+- 📱 Twilio API
+- ☁️ Render Deployment
 
 ---
 
-## 👩‍💻 Author
+# 🚀 Future Enhancements
+
+- 🤖 AI-powered safest route recommendation
+- 🎤 Voice-activated SOS
+- 📳 Shake detection for emergency alerts
+- 📍 Real-time live location sharing
+- 🔔 Push notifications
+- 👮 Police emergency service integration
+- 🌍 Multilingual support
+- 💬 AI-powered emergency chatbot
+
+---
+
+# 💡 Challenges Faced
+
+- Implementing secure OTP authentication
+- Integrating third-party APIs
+- Designing a responsive interface
+- Managing user authentication and authorization
+- Deploying a Django application on Render
+
+---
+
+# 📚 Learning Outcomes
+
+This project helped me gain hands-on experience in:
+
+- Full-Stack Web Development
+- Django Framework
+- Python Backend Development
+- Django ORM
+- Authentication & Authorization
+- REST API Integration
+- Google Maps API
+- Twilio API
+- Deployment using Render
+- Git & GitHub
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a new feature branch
+3. Commit your changes
+4. Push your branch
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👩‍💻 Author
 
 **Anshika Kumari**
-B.Tech CSE (AI & ML)
-Passionate about building impactful tech solutions 🚀
+
+🎓 B.Tech – Computer Science Engineering (AI & ML)
+
+📧 **Email:** akumari29539@gmail.com
+
+💼 **LinkedIn:** https://linkedin.com/in/anshika-kumari-7964b028a
+
+💻 **GitHub:** https://github.com/anshi26-cyber
+
+---
+
+## ⭐ Support
+
+If you found this project useful, please consider giving it a **⭐ Star** on GitHub.lding impactful tech solutions 🚀
