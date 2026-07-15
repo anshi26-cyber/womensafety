@@ -1,7 +1,62 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+OTP Sent
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h2>{{ message }}</h2>
-    <a href="{% url 'profile' %}">Back to Profile</a>
+
+<section class="otp-page py-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-6 col-lg-5">
+
+                <div class="card border-0 shadow-lg rounded-4">
+
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-4">
+
+                            <div class="otp-success-icon">
+                                ✅
+                            </div>
+
+                        </div>
+
+                        <h2 class="fw-bold mb-3">
+                            OTP Sent Successfully
+                        </h2>
+
+                        <p class="text-muted mb-4">
+                            {{ message }}
+                        </p>
+
+                        <a href="{% url 'profile' %}"
+                           class="btn btn-primary rounded-pill px-5">
+
+                            Back to Profile
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 {% endblock %}
 

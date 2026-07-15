@@ -1,0 +1,266 @@
+
+/*==================================================
+                PROFILE PAGE
+==================================================*/
+
+.profile-page{
+    background:#f5f7fb;
+    min-height:100vh;
+    padding:80px 0;
+}
+
+/* Header */
+
+.profile-tag{
+    display:inline-block;
+    padding:8px 22px;
+    background:#eef3ff;
+    color:#2563eb;
+    border-radius:50px;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.5px;
+}
+
+.profile-header h1{
+    font-weight:800;
+}
+
+/* Card */
+
+.profile-card{
+    border:none;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.profile-card:hover{
+    transform:translateY(-5px);
+}
+
+/* Sidebar */
+
+.profile-sidebar{
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:#fff;
+    padding:45px 35px;
+}
+
+/* Avatar */
+
+.profile-avatar{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid rgba(255,255,255,.9);
+    transition:.3s;
+}
+
+.profile-avatar:hover{
+    transform:scale(1.05);
+}
+
+/* Online Badge */
+
+.online-badge{
+    position:absolute;
+    bottom:10px;
+    right:20px;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:#22c55e;
+    border:3px solid #fff;
+}
+
+/* User Details */
+
+.profile-details{
+    margin-top:25px;
+}
+
+.detail-item{
+    margin-bottom:18px;
+}
+
+.detail-item small{
+    display:block;
+    opacity:.75;
+    font-size:13px;
+}
+
+.detail-item h6{
+    margin-top:3px;
+    font-weight:600;
+}
+
+/* Form */
+
+.profile-card .card-body{
+    padding:45px;
+}
+
+/* Verification Cards */
+
+.verify-card{
+    background:#fff;
+    border:1px solid #e6e8ef;
+    border-radius:18px;
+    padding:25px;
+    transition:.3s;
+    height:100%;
+}
+
+.verify-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+}
+
+.verify-card h5{
+    font-size:18px;
+    font-weight:700;
+}
+
+/* Inputs */
+
+.verify-card .form-control{
+    border-radius:12px;
+    padding:12px 15px;
+    border:1px solid #d8dce6;
+}
+
+.verify-card .form-control:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.15);
+}
+
+/* OTP Animation */
+
+#phone-otp-box,
+#email-otp-box,
+#aadhaar-otp-box{
+    animation:fadeIn .35s ease;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* Buttons */
+
+.btn-gradient{
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:#fff;
+    border:none;
+}
+
+.btn-gradient:hover{
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+.profile-card .btn{
+    border-radius:50px;
+    font-weight:600;
+}
+
+/* Progress */
+
+.progress{
+    border-radius:50px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    font-weight:600;
+    font-size:11px;
+}
+
+/*==================================================
+                DARK MODE
+==================================================*/
+
+body.dark-mode .profile-page{
+    background:#111827;
+}
+
+body.dark-mode .profile-card{
+    background:#1f2937;
+}
+
+body.dark-mode .card-body{
+    background:#1f2937;
+    color:#fff;
+}
+
+body.dark-mode .verify-card{
+    background:#273449;
+    border-color:#39465a;
+}
+
+body.dark-mode .verify-card h5,
+body.dark-mode .profile-header h1{
+    color:#fff;
+}
+
+body.dark-mode .verify-card .form-control{
+    background:#111827;
+    color:#fff;
+    border-color:#444;
+}
+
+body.dark-mode .verify-card .form-control::placeholder{
+    color:#9ca3af;
+}
+
+body.dark-mode .text-muted{
+    color:#cbd5e1 !important;
+}
+
+
+@media(max-width:991px){
+
+    .profile-sidebar{
+        text-align:center;
+        padding:35px 25px;
+    }
+
+    .profile-avatar{
+        width:120px;
+        height:120px;
+    }
+
+    .profile-card .card-body{
+        padding:30px;
+    }
+
+}
+
+@media(max-width:576px){
+
+    .profile-header h1{
+        font-size:2rem;
+    }
+
+    .verify-card{
+        padding:20px;
+    }
+
+    .profile-details{
+        text-align:center;
+    }
+
+}

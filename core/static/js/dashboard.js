@@ -163,7 +163,174 @@ async function fetchAlerts(){
     console.error(e);
   }
 }
+/* -------------------------
+   Dashboard Buttons
+------------------------- */
 
+// Refresh
+document.getElementById("refresh-btn")?.addEventListener("click", () => {
+    fetchAlerts();
+    showToast("Dashboard Refreshed");
+});
+
+
+// Apply Filters
+document.getElementById("apply-filters")?.addEventListener("click", async () => {
+
+    const start = document.getElementById("filter-start").value;
+    const end = document.getElementById("filter-end").value;
+    const verified = document.getElementById("filter-verified").checked;
+
+    try{
+
+        const res = await fetch("/api/panic-alerts/");
+        const data = await res.json();
+
+        let alerts = data.alerts || [];
+
+        alerts = alerts.filter(a => {
+
+            let ok = true;
+
+            if(start)
+                ok = ok && a.timestamp >= start;
+
+            if(end)
+                ok = ok && a.timestamp <= end + " 23:59:59";
+
+            if(verified)
+                ok = ok && a.is_verified;
+
+            return ok;
+
+        });
+
+        document.getElementById("history-list").innerHTML = "";
+
+        alerts.forEach(a=>{
+
+            const div=document.createElement("div");
+
+            div.className="history-item";
+
+            div.innerHTML=`
+                <strong>${escapeHtml(a.full_name || "User")}</strong>
+                <br>
+                <small>${escapeHtml(a.timestamp)}</small>
+                <br>
+                <button class="btn btn-sm btn-outline-primary mt-2">
+                    View
+                </button>
+            `;
+
+            div.querySelector("button").onclick=()=>{
+
+                const marker=markersById.get(a.id);
+
+                if(marker){
+
+                    map.setView(marker.getLatLng(),13);
+
+                    marker.openPopup();
+
+                }
+
+            };
+
+            document.getElementById("history-list").appendChild(div);
+
+        });
+
+        showToast("Filters Applied");
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+});
+
+
+// Clear Filters
+document.getElementById("clear-filters")?.addEventListener("click",()=>{
+
+    document.getElementById("filter-start").value="";
+
+    document.getElementById("filter-end").value="";
+
+    document.getElementById("filter-verified").checked=false;
+
+    fetchAlerts();
+
+    showToast("Filters Cleared");
+
+});
+
+
+// Fit Map Bounds
+document.getElementById("use-bounds")?.addEventListener("click",()=>{
+
+    if(markersById.size===0) return;
+
+    const group=[];
+
+    markersById.forEach(marker=>{
+
+        group.push(marker.getLatLng());
+
+    });
+
+    map.fitBounds(group);
+
+    showToast("Map Adjusted");
+
+});
+// =======================
+// Export CSV
+// =======================
+
+document.getElementById("export-btn")?.addEventListener("click", async () => {
+
+    try {
+
+        const res = await fetch("/api/panic-alerts/");
+        const data = await res.json();
+
+        if (!data.alerts || data.alerts.length === 0) {
+            showToast("No data to export");
+            return;
+        }
+
+        let csv = "Username,Email,Phone,Latitude,Longitude,Time\n";
+
+        data.alerts.forEach(alert => {
+            csv += `"${alert.username || ""}","${alert.email || ""}","${alert.contact_number || ""}","${alert.latitude || ""}","${alert.longitude || ""}","${alert.timestamp || ""}"\n`;
+        });
+
+        const blob = new Blob([csv], { type: "text/csv" });
+
+        const link = document.createElement("a");
+
+        link.href = URL.createObjectURL(blob);
+
+        link.download = "panic_alerts.csv";
+
+        link.click();
+
+        URL.revokeObjectURL(link.href);
+
+        showToast("Export Successful");
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+});
 /* -------------------------
    Toast
 ------------------------- */

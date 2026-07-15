@@ -1,95 +1,363 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title %}
+Home
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 {% block content %}
 
-<!-- Hero Section -->
-<section class="hero d-flex align-items-center position-relative text-center text-white">
+<!-- ================= HERO ================= -->
+
+<section class="hero position-relative overflow-hidden">
+
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-xl-8">
-                <h1 class="display-4 fw-bold mb-3">
-                    Stay Safe. Stay In Control.
+
+        <div class="row justify-content-center align-items-center min-vh-100">
+
+            <div class="col-lg-8 text-center">
+
+                <span class="hero-badge">
+                    🛡 Trusted Women's Safety Platform
+                </span>
+
+                <h1 class="display-2 fw-bold mt-4">
+                    Stay Safe.<br>
+                    Stay In Control.
                 </h1>
-                <p class="lead mb-4">
-                    Instant panic alerts, verified helplines, and safety guidance.
+
+                <p class="lead my-4 hero-text">
+                    WomenSafetyApp helps you stay protected with instant SOS alerts,
+                    live GPS tracking, verified emergency contacts, and smart safety
+                    features whenever you need assistance.
                 </p>
+
+                <div class="hero-list justify-content-center mb-5">
+
+                    <span>✔ Live GPS Tracking</span>
+
+                    <span>✔ Instant SOS</span>
+
+                    <span>✔ Verified Users</span>
+
+                </div>
 
                 {% if not user.is_authenticated %}
-                <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mb-3">
-                    <a href="{% url 'register' %}" class="btn btn-gradient btn-lg">
-                        Create Account
+
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+
+                    <a href="{% url 'register' %}"
+                       class="btn btn-gradient btn-lg px-5">
+                        Get Started
                     </a>
-                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
-                        Login
+
+                    <a href="{% url 'about' %}"
+                       class="btn btn-outline-light btn-lg px-5">
+                        Learn More
                     </a>
+
                 </div>
+
+                {% else %}
+
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+
+                    <a href="{% url 'about' %}"
+                       class="btn btn-outline-light btn-lg px-5">
+                        Learn More
+                    </a>
+
+                    <a href="{% url 'helpline' %}"
+                       class="btn btn-outline-light btn-lg px-5">
+                        Emergency Helpline
+                    </a>
+
+                </div>
+
                 {% endif %}
 
-                <a href="{% url 'about' %}" class="btn btn-info btn-lg mt-2">
-                    Learn More
-                </a>
-
-                <p class="mt-4 small text-light-50">
-                    Built for safety and privacy.
-                </p>
             </div>
+
         </div>
+
     </div>
 
-    <!-- Panic Button -->
     {% if user.is_authenticated and user.is_verified and user.phone_verified and user.email_verified %}
-        <button id="panic-btn" class="btn position-absolute panic-btn">
-            PANIC ALERT
-        </button>
+
+    <button id="panic-btn" class="btn panic-btn">
+        🚨 EMERGENCY SOS
+    </button>
+
     {% else %}
-        <button class="btn position-absolute panic-btn disabled" disabled>
-            PANIC ALERT
-        </button>
+
+    <button class="btn panic-btn disabled" disabled>
+        🚨 EMERGENCY SOS
+    </button>
+
     {% endif %}
+
 </section>
 
-<!-- Features -->
-<section class="features py-5 bg-light">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-4">Features</h2>
+<!-- ================= FEATURES ================= -->
+
+<section class="features py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <span class="section-tag">
+                OUR FEATURES
+            </span>
+
+            <h2 class="display-5 fw-bold mt-3">
+                Everything You Need
+                <br>
+                To Stay Safe
+            </h2>
+
+            <p class="text-muted mx-auto" style="max-width:650px;">
+                WomenSafetyApp provides smart safety tools that help you
+                stay connected with your trusted contacts and emergency
+                services whenever you need assistance.
+            </p>
+
+        </div>
 
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card p-4">
-                    <h4>Instant Alerts</h4>
-                    <p>Send your live location instantly.</p>
+
+            <div class="col-lg-4">
+
+                <div class="feature-card h-100">
+
+                    <div class="feature-icon">
+                        🚨
+                    </div>
+
+                    <h4>Instant SOS Alerts</h4>
+
+                    <p>
+                        Send emergency alerts with your live GPS location
+                        to trusted contacts in just one tap.
+                    </p>
+
                 </div>
+
             </div>
 
-            <div class="col-md-4">
-                <div class="feature-card p-4">
-                    <h4>Helplines</h4>
-                    <p>Access emergency contacts quickly.</p>
+            <div class="col-lg-4">
+
+                <div class="feature-card h-100">
+
+                    <div class="feature-icon">
+                        📍
+                    </div>
+
+                    <h4>Live GPS Tracking</h4>
+
+                    <p>
+                        Allow family members to monitor your location during
+                        emergencies in real time.
+                    </p>
+
                 </div>
+
             </div>
 
-            <div class="col-md-4">
-                <div class="feature-card p-4">
-                    <h4>Safety Tips</h4>
-                    <p>Stay prepared in every situation.</p>
+            <div class="col-lg-4">
+
+                <div class="feature-card h-100">
+
+                    <div class="feature-icon">
+                        ☎
+                    </div>
+
+                    <h4>Emergency Helplines</h4>
+
+                    <p>
+                        Access verified police, ambulance and women
+                        helpline numbers instantly.
+                    </p>
+
                 </div>
+
             </div>
+
+            <div class="col-lg-4">
+
+                <div class="feature-card h-100">
+
+                    <div class="feature-icon">
+                        🤖
+                    </div>
+
+                    <h4>AI Safety Tips</h4>
+
+                    <p>
+                        Receive intelligent recommendations based on your
+                        current situation and location.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="feature-card h-100">
+
+                    <div class="feature-icon">
+                        👨‍👩‍👧
+                    </div>
+
+                    <h4>Trusted Contacts</h4>
+
+                    <p>
+                        Notify your family and trusted friends instantly
+                        during emergencies.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="feature-card h-100">
+
+                    <div class="feature-icon">
+                        🔒
+                    </div>
+
+                    <h4>Secure Account</h4>
+
+                    <p>
+                        Aadhaar, phone and email verification keeps the
+                        platform safe from misuse.
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
+
     </div>
+
 </section>
 
-<!-- CTA -->
-<section class="py-5">
-    <div class="container text-center">
-        <div class="cta-box text-white p-5">
-            <h2>Start Now</h2>
-            <a href="{% url 'register' %}" class="btn btn-gradient">
-                Get Started
+
+<!-- ================= CTA ================= -->
+
+<section class="cta-section py-5">
+
+    <div class="container">
+
+        <div class="cta-box">
+
+            <h2 class="display-6 fw-bold mb-3">
+
+                Your Safety Matters.
+
+            </h2>
+
+            <p class="lead mb-4">
+
+                Join thousands of users protecting themselves with
+                real-time emergency assistance.
+
+            </p>
+
+            {% if not user.is_authenticated %}
+
+            <a href="{% url 'register' %}"
+               class="btn btn-gradient btn-lg px-5">
+
+                Create Free Account
+
             </a>
+
+            {% else %}
+
+            <a href="{% url 'profile' %}"
+               class="btn btn-gradient btn-lg px-5">
+
+                Go To My Profile
+
+            </a>
+
+            {% endif %}
+
         </div>
+
     </div>
+
 </section>
+
+<!-- ================= SOS MODAL ================= -->
+
+<div id="sos-modal" class="sos-modal">
+
+    <div class="sos-box">
+
+        <div class="sos-icon">
+            🚨
+        </div>
+
+        <h2>Emergency SOS</h2>
+
+        <p class="sos-subtitle">
+            Your live location will be shared with the emergency dashboard.
+        </p>
+
+        <!-- Countdown Circle -->
+
+        <div class="countdown-circle">
+
+            <span id="countdown">
+                5
+            </span>
+
+        </div>
+
+        <p class="cancel-text">
+
+            Accidentally pressed the button?
+
+            <br>
+
+            Cancel within <strong>5 seconds</strong>.
+
+        </p>
+
+        <!-- Progress -->
+
+        <div class="progress custom-progress">
+
+            <div
+                id="progress-bar"
+                class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                style="width:100%">
+            </div>
+
+        </div>
+
+        <div class="d-grid mt-4">
+
+            <button
+                id="cancel-sos"
+                class="btn btn-light btn-lg rounded-pill">
+
+                ❌ Cancel SOS
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}
 

@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Dashboard Passkey
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container py-5 passkey-page">
@@ -24,7 +33,7 @@
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-dark passkey-btn">
+                            <button type="submit" class="btn btn-blue passkey-btn">
                                 Unlock Dashboard
                             </button>
                         </div>

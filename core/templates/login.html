@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
 
 {% block content %}
 
@@ -54,7 +63,7 @@
 
                             <!-- Login button -->
                             <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-blue fw-semibold py-2">
+                                <button type="submit" class="btn btn-blue w-100">
                                     Login
                                 </button>
                             </div>

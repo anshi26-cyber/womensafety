@@ -1,62 +1,270 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+Create Account
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<section class="register-section py-5">
+<section class="register-section">
+
     <div class="container">
+
         <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-5">
 
-                <div class="card shadow-lg border-0 rounded-4">
-                    <div class="card-body p-4">
+            <div class="col-lg-5 col-md-7">
 
-                        <h2 class="text-center fw-bold mb-2">Create Your Account</h2>
-                        <p class="text-center text-muted small mb-4">
-                            Sign up to use safety features.
-                        </p>
+                <div class="card register-card">
+
+                    <div class="card-body p-5">
+
+                        <!-- Logo -->
+
+                        <div class="text-center mb-4">
+
+                            <img src="{% static 'images/logo.png' %}"
+                                 width="75"
+                                 class="mb-3"
+                                 alt="Logo">
+
+                            <h2 class="fw-bold mb-2">
+                                Create Account
+                            </h2>
+
+                            <p class="text-muted">
+                                Join Women Safety and protect yourself with smart safety features.
+                            </p>
+
+                        </div>
 
                         <form method="POST" id="registerForm">
+
                             {% csrf_token %}
 
-                            <input type="text" name="username" class="form-control custom-input mb-3" placeholder="Username" required>
+                            <!-- Username -->
 
-                            <input type="email" name="email" class="form-control custom-input mb-3" placeholder="Email" required>
+                            <div class="mb-3">
 
-                            <input type="text" name="aadhaar_number" class="form-control custom-input mb-3" placeholder="Aadhaar" required>
+                                <label class="form-label">
+                                    Username
+                                </label>
 
-                            <input type="text" name="contact_number" class="form-control custom-input mb-3" placeholder="Phone" required>
+                                <div class="input-group">
 
-                            <input type="password" id="password" name="password" class="form-control custom-input mb-3" placeholder="Password" required>
+                                    <span class="input-group-text">
+                                        👤
+                                    </span>
 
-                            <input type="password" id="confirm_password" class="form-control custom-input mb-2" placeholder="Confirm Password" required>
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        class="form-control custom-input"
+                                        placeholder="Enter username"
+                                        required>
 
-                            <small id="passwordHelp" class="text-danger d-none">Passwords do not match</small>
+                                </div>
 
-                            <button class="btn btn-blue w-100 mt-3">Register</button>
+                            </div>
+
+                            <!-- Email -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Email Address
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        📧
+                                    </span>
+
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        class="form-control custom-input"
+                                        placeholder="Enter email"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Phone -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Phone Number
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        📱
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="contact_number"
+                                        class="form-control custom-input"
+                                        placeholder="Enter phone number"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Aadhaar -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Aadhaar Number
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        🪪
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="aadhaar_number"
+                                        class="form-control custom-input"
+                                        placeholder="Enter Aadhaar number"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Password -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Password
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        🔒
+                                    </span>
+
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        class="form-control custom-input"
+                                        placeholder="Create password"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Confirm Password -->
+
+                            <div class="mb-2">
+
+                                <label class="form-label">
+                                    Confirm Password
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        ✅
+                                    </span>
+
+                                    <input
+                                        type="password"
+                                        id="confirm_password"
+                                        class="form-control custom-input"
+                                        placeholder="Confirm password"
+                                        required>
+
+                                </div>
+
+                                <small id="passwordHelp"
+                                       class="text-danger d-none">
+
+                                    Passwords do not match
+
+                                </small>
+
+                            </div>
+
+                            <!-- Password Hint -->
+
+                            <small class="text-muted d-block mb-4">
+
+                                Password should contain at least 8 characters.
+
+                            </small>
+
+                            <button
+                                class="btn btn-blue w-100 py-3">
+
+                                Create Account
+
+                            </button>
 
                         </form>
 
-                        <p class="text-center mt-3 small">
-                            Already have an account?
-                            <a href="{% url 'login' %}" class="text-blue">Login</a>
-                        </p>
+                        <hr class="my-4">
+
+                        <div class="text-center">
+
+                            <p class="mb-2">
+
+                                Already have an account?
+
+                            </p>
+
+                            <a href="{% url 'login' %}"
+                               class="text-blue fw-semibold">
+
+                                Login Here
+
+                            </a>
+
+                        </div>
 
                     </div>
+
                 </div>
 
                 <div class="text-center mt-4">
-                    <a href="{% url 'home' %}" class="btn btn-outline-dark rounded-pill">
-                        ⬅ Back
+
+                    <a href="{% url 'home' %}"
+                       class="btn btn-outline-dark rounded-pill px-4">
+
+                        ← Back to Home
+
                     </a>
+
                 </div>
 
             </div>
+
         </div>
+
     </div>
+
 </section>
 
-<!-- JS -->
-<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock %}

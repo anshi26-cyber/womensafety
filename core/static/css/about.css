@@ -1,0 +1,237 @@
+
+/*==================================================
+                ABOUT PAGE
+==================================================*/
+
+.about-hero{
+
+    min-height:55vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+    url("https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1600&q=80")
+    center/cover no-repeat;
+
+}
+
+.about-hero h1{
+
+    font-size:3.3rem;
+
+    font-weight:800;
+
+    color:white;
+
+    text-shadow:0 5px 20px rgba(0,0,0,.35);
+
+}
+
+.about-hero p{
+
+    color:#f1f1f1;
+
+    max-width:700px;
+
+    margin:auto;
+
+}
+
+.about-content{
+
+    padding:90px 0;
+
+    background:var(--bg);
+
+}
+
+.about-content h2{
+
+    margin-bottom:18px;
+
+    font-weight:700;
+
+}
+
+.about-content h3{
+
+    margin-top:35px;
+
+    margin-bottom:20px;
+
+    font-weight:700;
+
+}
+
+.about-content p{
+
+    line-height:1.8;
+
+}
+
+.image-box{
+
+    overflow:hidden;
+
+    border-radius:22px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+.image-box img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+}
+
+.image-box:hover img{
+
+    transform:scale(1.06);
+
+}
+
+.about-content ul{
+
+    padding-left:0;
+
+}
+
+.about-content li{
+
+    list-style:none;
+
+    padding:10px 0;
+
+    color:var(--text-light);
+
+    font-size:1rem;
+
+}
+
+.about-content li strong{
+
+    color:var(--text);
+
+}
+
+/*==================================================
+                INFO CARDS
+==================================================*/
+
+.info-card{
+
+    background:var(--card);
+
+    border:none;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    height:100%;
+
+    transition:.35s;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+.info-card h5{
+
+    margin-bottom:15px;
+
+    font-weight:700;
+
+}
+
+.info-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.15);
+
+}
+
+/*==================================================
+                DARK MODE
+==================================================*/
+
+body.dark-mode .about-content{
+
+    background:#121212;
+
+}
+
+body.dark-mode .info-card{
+
+    background:#1f1f1f;
+
+    color:white;
+
+}
+
+body.dark-mode .info-card p{
+
+    color:#d5d5d5;
+
+}
+
+body.dark-mode .about-content li{
+
+    color:#d5d5d5;
+
+}
+
+body.dark-mode .about-content li strong{
+
+    color:white;
+
+}
+@media(max-width:768px){
+
+.about-hero{
+
+    min-height:45vh;
+
+}
+
+.about-hero h1{
+
+    font-size:2.3rem;
+
+}
+
+.about-content{
+
+    padding:60px 0;
+
+}
+
+.image-box{
+
+    margin-bottom:35px;
+
+}
+
+.info-card{
+
+    margin-bottom:20px;
+
+}
+
+}
+

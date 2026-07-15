@@ -1,0 +1,396 @@
+
+/*==================================================
+                HELPLINE HERO
+==================================================*/
+
+.helpline-hero{
+    padding:90px 0;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    color:#fff;
+    overflow:hidden;
+    position:relative;
+}
+
+.helpline-hero::before{
+    content:"";
+    position:absolute;
+    width:350px;
+    height:350px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+    top:-120px;
+    right:-120px;
+}
+
+.hero-badge{
+    display:inline-block;
+    background:rgba(255,255,255,.15);
+    padding:10px 22px;
+    border-radius:50px;
+    backdrop-filter:blur(10px);
+    font-weight:600;
+}
+
+.helpline-hero h1{
+    font-size:3.5rem;
+    font-weight:800;
+}
+
+.helpline-hero p{
+    color:#dbeafe;
+    max-width:620px;
+}
+
+.hero-image{
+    max-width:360px;
+    animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+
+0%,100%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-15px);
+}
+
+}
+
+/*==================================================
+                STATS
+==================================================*/
+
+.hero-stats{
+    display:flex;
+    gap:25px;
+    margin-top:35px;
+    flex-wrap:wrap;
+}
+
+.stat-box{
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
+    padding:20px;
+    border-radius:18px;
+    text-align:center;
+    min-width:120px;
+}
+
+.stat-box h3{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.stat-box span{
+    color:#e2e8f0;
+}
+
+/*==================================================
+                EMERGENCY CARDS
+==================================================*/
+
+.emergency-card{
+
+    border-radius:25px;
+
+    padding:40px 30px;
+
+    text-align:center;
+
+    color:#fff;
+
+    transition:.35s;
+
+    height:100%;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
+
+.emergency-card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+.emergency-card .icon{
+
+    width:80px;
+
+    height:80px;
+
+    background:rgba(255,255,255,.2);
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:auto auto 20px;
+
+    font-size:36px;
+
+}
+
+.emergency-card h2{
+
+    font-size:42px;
+
+    font-weight:800;
+
+    margin:15px 0;
+
+}
+
+.emergency-card .btn{
+
+    margin-top:18px;
+
+    border-radius:50px;
+
+    padding:10px 28px;
+
+    font-weight:600;
+
+}
+
+.danger{
+    background:linear-gradient(135deg,#ef4444,#b91c1c);
+}
+
+.warning{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+.success{
+    background:linear-gradient(135deg,#22c55e,#15803d);
+}
+
+/*==================================================
+                SEARCH
+==================================================*/
+
+#searchHelpline{
+
+    border-radius:50px;
+
+    padding:16px 24px;
+
+    border:none;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+#searchHelpline:focus{
+
+    box-shadow:0 0 0 .25rem rgba(37,99,235,.2);
+
+}
+
+/*==================================================
+                TABLE
+==================================================*/
+
+.table-wrapper{
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    background:#fff;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.table{
+
+    margin:0;
+
+}
+
+.table thead{
+
+    background:#111827;
+
+    color:#fff;
+
+}
+
+.table th{
+
+    padding:18px;
+
+    font-weight:700;
+
+}
+
+.table td{
+
+    padding:18px;
+
+    vertical-align:middle;
+
+}
+
+.table tbody tr{
+
+    transition:.3s;
+
+}
+
+.table tbody tr:hover{
+
+    background:#eff6ff;
+
+}
+
+.table .btn{
+
+    border-radius:30px;
+
+}
+
+/*==================================================
+                SAFETY TIPS
+==================================================*/
+
+.card{
+
+    border-radius:24px;
+
+}
+
+.card h3{
+
+    font-weight:700;
+
+}
+
+.card h5{
+
+    margin-bottom:12px;
+
+    font-weight:700;
+
+}
+
+.card p{
+
+    color:#6b7280;
+
+}
+
+/*==================================================
+                DARK MODE
+==================================================*/
+
+body.dark-mode .helpline-hero{
+
+    background:linear-gradient(135deg,#111827,#0f172a);
+
+}
+
+body.dark-mode .table-wrapper{
+
+    background:#1f2937;
+
+}
+
+body.dark-mode .table{
+
+    color:#fff;
+
+}
+
+body.dark-mode .table tbody tr:hover{
+
+    background:#374151;
+
+}
+
+body.dark-mode .card{
+
+    background:#1f2937;
+
+    color:#fff;
+
+}
+
+body.dark-mode .card p{
+
+    color:#d1d5db;
+
+}
+
+body.dark-mode #searchHelpline{
+
+    background:#1f2937;
+
+    color:#fff;
+
+}
+
+body.dark-mode #searchHelpline::placeholder{
+
+    color:#cbd5e1;
+
+}
+@media(max-width:992px){
+
+.helpline-hero{
+
+text-align:center;
+
+}
+
+.hero-stats{
+
+justify-content:center;
+
+}
+
+.hero-image{
+
+margin-top:40px;
+
+max-width:260px;
+
+}
+
+.helpline-hero h1{
+
+font-size:2.6rem;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.stat-box{
+
+width:100%;
+
+}
+
+.emergency-card{
+
+padding:30px 20px;
+
+}
+
+.table{
+
+font-size:14px;
+
+}
+
+}

@@ -1,91 +1,298 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Helpline
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/helpline.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<section class="helpline-section py-5">
+<!-- ================= HERO ================= -->
+
+<section class="helpline-hero py-5">
+
     <div class="container">
 
-        <!-- Heading -->
-        <div class="text-center mb-5">
-            <span class="badge bg-danger-subtle text-danger fw-semibold px-3 py-2 mb-2">
-                Emergency Support
-            </span>
-            <h1 class="fw-bold mb-2">Helpline Contacts</h1>
-            <p class="text-muted mb-0">
-                Verified emergency numbers you can reach quickly in case of any threat or unsafe situation.
-            </p>
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+
+                <span class="hero-badge">
+                    🚨 Emergency Support
+                </span>
+
+                <h1 class="display-4 fw-bold mt-4">
+                    Emergency Helpline Directory
+                </h1>
+
+                <p class="lead mt-3">
+                    One tap can save a life. Access verified emergency contacts
+                    instantly whenever you need help.
+                </p>
+
+                <div class="hero-stats mt-4">
+
+                    <div class="stat-box">
+                        <h3>24×7</h3>
+                        <span>Support</span>
+                    </div>
+
+                    <div class="stat-box">
+                        <h3>100+</h3>
+                        <span>Verified Contacts</span>
+                    </div>
+
+                    <div class="stat-box">
+                        <h3>100%</h3>
+                        <span>Reliable</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-5 text-center">
+
+                <img
+                    src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png"
+                    class="img-fluid hero-image"
+                    alt="Emergency">
+
+            </div>
+
         </div>
 
-        <!-- Cards -->
-        <div class="row g-4 mb-5">
+    </div>
+
+</section>
+
+<!-- ================= EMERGENCY CARDS ================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
             <div class="col-md-4">
-                <div class="card helpline-card bg-danger text-white text-center p-4 h-100">
-                    <h4 class="fw-bold mb-1">Women Helpline</h4>
-                    <p class="fs-3 fw-bold mb-1">1091</p>
-                    <p class="small mb-3">24x7 support</p>
-                    <a href="tel:1091" class="btn btn-light btn-sm">Call Now</a>
+
+                <div class="emergency-card danger">
+
+                    <div class="icon">🚨</div>
+
+                    <h4>Women Helpline</h4>
+
+                    <h2>1091</h2>
+
+                    <p>24×7 Emergency Support</p>
+
+                    <a href="tel:1091" class="btn btn-light rounded-pill">
+                        Call Now
+                    </a>
+
                 </div>
+
             </div>
 
             <div class="col-md-4">
-                <div class="card helpline-card bg-warning text-dark text-center p-4 h-100">
-                    <h4 class="fw-bold mb-1">Police</h4>
-                    <p class="fs-3 fw-bold mb-1">100</p>
-                    <p class="small mb-3">Police assistance</p>
-                    <a href="tel:100" class="btn btn-dark btn-sm">Call Now</a>
+
+                <div class="emergency-card warning">
+
+                    <div class="icon">👮</div>
+
+                    <h4>Police</h4>
+
+                    <h2>100</h2>
+
+                    <p>Immediate Police Assistance</p>
+
+                    <a href="tel:100" class="btn btn-dark rounded-pill">
+                        Call Now
+                    </a>
+
                 </div>
+
             </div>
 
             <div class="col-md-4">
-                <div class="card helpline-card bg-success text-white text-center p-4 h-100">
-                    <h4 class="fw-bold mb-1">Ambulance</h4>
-                    <p class="fs-3 fw-bold mb-1">108</p>
-                    <p class="small mb-3">Medical help</p>
-                    <a href="tel:108" class="btn btn-light btn-sm">Call Now</a>
+
+                <div class="emergency-card success">
+
+                    <div class="icon">🚑</div>
+
+                    <h4>Ambulance</h4>
+
+                    <h2>108</h2>
+
+                    <p>Medical Emergency</p>
+
+                    <a href="tel:108" class="btn btn-light rounded-pill">
+                        Call Now
+                    </a>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Table -->
-        <div class="table-wrapper shadow-sm bg-white p-3">
+    </div>
+
+</section>
+
+<!-- ================= SEARCH ================= -->
+
+<section class="pb-4">
+
+    <div class="container">
+
+        <input
+            type="text"
+            id="searchHelpline"
+            class="form-control form-control-lg"
+            placeholder="🔍 Search contact...">
+
+    </div>
+
+</section>
+
+<!-- ================= TABLE ================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="table-wrapper shadow rounded-4">
+
             <div class="table-responsive">
+
                 <table class="table table-hover align-middle mb-0">
+
                     <thead class="table-dark">
+
                         <tr>
+
                             <th>#</th>
                             <th>Name</th>
                             <th>Phone</th>
                             <th>Email</th>
                             <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for contact in helpline_contacts %}
-                        <tr>
-                            <th>{{ forloop.counter }}</th>
-                            <td>{{ contact.name }}</td>
-                            <td>
-                                <a href="tel:{{ contact.phone_number }}" class="btn btn-sm btn-outline-primary rounded-pill">
-                                    📞 {{ contact.phone_number }}
-                                </a>
-                            </td>
-                            <td>{{ contact.email|default:"N/A" }}</td>
-                            <td>{{ contact.description|default:"No details" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <!-- Back -->
-        <div class="text-center mt-4">
-            <a href="{% url 'home' %}" class="btn btn-dark rounded-pill">
-                ⬅ Back
-            </a>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for contact in helpline_contacts %}
+
+                        <tr>
+
+                            <td>{{ forloop.counter }}</td>
+
+                            <td>{{ contact.name }}</td>
+
+                            <td>
+
+                                <a href="tel:{{ contact.phone_number }}"
+                                   class="btn btn-outline-primary btn-sm rounded-pill">
+
+                                    📞 {{ contact.phone_number }}
+
+                                </a>
+
+                            </td>
+
+                            <td>{{ contact.email|default:"N/A" }}</td>
+
+                            <td>{{ contact.description|default:"No details" }}</td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
         </div>
 
     </div>
+
 </section>
+
+<!-- ================= SAFETY TIPS ================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="card border-0 shadow rounded-4">
+
+            <div class="card-body p-5">
+
+                <h3 class="fw-bold mb-4">
+                    💡 Emergency Safety Tips
+                </h3>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <h5>📍 Share Location</h5>
+
+                        <p>
+                            Share your live location with trusted contacts.
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <h5>📞 Call Immediately</h5>
+
+                        <p>
+                            Contact the nearest emergency service without delay.
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <h5>🚶 Stay Calm</h5>
+
+                        <p>
+                            Stay calm and move to a public place whenever possible.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= BACK BUTTON ================= -->
+
+<div class="text-center pb-5">
+
+    <a href="{% url 'home' %}" class="btn btn-dark rounded-pill px-5">
+
+        ← Back to Home
+
+    </a>
+
+</div>
 
 {% endblock %}
